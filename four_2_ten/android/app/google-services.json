@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "393754803149",
+    "firebase_url": "https://four2ten-3de7b-default-rtdb.firebaseio.com",
+    "project_id": "four2ten-3de7b",
+    "storage_bucket": "four2ten-3de7b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:393754803149:android:678e99026e9797642e2284",
+        "android_client_info": {
+          "package_name": "com.example.four_2_ten"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "393754803149-qtnar0i77vs65sibga1bfufvfif8jhtt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBR2Fpv7HhKa84T1xLCIMPLSWbX25rkLwc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "393754803149-qtnar0i77vs65sibga1bfufvfif8jhtt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
