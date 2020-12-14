@@ -1,15 +1,14 @@
-import 'package:four_2_ten/Colour.dart';
+import 'Colour.dart';
 
 class Player {
   String id;
   String name;
-  int score;
+  int score = 0;
   Colour colour;
 
-  Player(String id, String name, int score, Colour colour) {
+  Player(String id, String name, Colour colour) {
     this.id = id;
     this.name = name;
-    this.score = score;
     this.colour = colour;
   }
 

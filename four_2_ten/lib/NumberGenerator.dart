@@ -1,5 +1,0 @@
-class NumberGenerator {
-  String generate() {
-
-  }
-}

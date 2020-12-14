@@ -1,4 +1,4 @@
-import 'package:four_2_ten/NetworkController.dart';
+import 'NetworkController.dart';
 
 class HostNetworkController extends NetworkController {
 
