@@ -7,16 +7,16 @@ import 'dart:io';
 
 class GameController {
   // players
-  List<Player> otherPlayers;
+  List<Player> otherPlayers = new List<Player>();
   Player currPlayer;
   // platform specific channels
-  static const android_id_channel = const MethodChannel('com.example.four_2_ten/uid');
+  static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // network controller
   NetworkController networkController = new NetworkController();
-  // number generator used to generate questions and room pin
+  // number generator used to generate questions
   NumberGenerator numberGenerator = new NumberGenerator();
 
-  Future<String> getId() async {
+  Future<String> _getId() async {
     try {
       if (Platform.isAndroid) {
         String id = await android_id_channel.invokeMethod('getId');
@@ -24,14 +24,17 @@ class GameController {
       } else if (Platform.isIOS) {
         // TODO: implement ios method
         return "";
+      } else {
+        return null;
       }
     } on PlatformException catch (e) {
       return null;
     }
   }
 
+
   void joinRoom(String pin, String name, Colour colour) async {
-    String id = await getId();
+    String id = await _getId();
     Player player = new Player(id, name, colour);
     networkController.joinRoom(pin, player);
     networkController.attachPlayerJoinListener(pin, (Player player){
@@ -41,16 +44,16 @@ class GameController {
       } else {
         otherPlayers.add(player);
       }
+      print(currPlayer);
     });
   }
 
-  void createRoom() {
-    String pin = numberGenerator.generateRoomPin();
-    networkController.createRoom(pin);
+  void handleRoomCreation(String pin) {
+    // TODO: implement
+    print(pin);
   }
 
-
-
-
-
+  void createRoom() {
+    networkController.createRoom(handleRoomCreation);
+  }
 }
