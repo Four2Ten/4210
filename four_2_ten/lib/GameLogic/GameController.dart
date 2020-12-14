@@ -13,7 +13,7 @@ class GameController {
   static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // network controller
   NetworkController networkController = new NetworkController();
-  // number generator used to generate questions and room pin
+  // number generator used to generate questions
   NumberGenerator numberGenerator = new NumberGenerator();
 
   Future<String> _getId() async {
@@ -44,17 +44,16 @@ class GameController {
       } else {
         otherPlayers.add(player);
       }
+      print(currPlayer);
     });
   }
 
-  String createRoom() {
-    String pin = numberGenerator.generateRoomPin();
-    networkController.createRoom(pin);
-    return pin;
+  void handleRoomCreation(String pin) {
+    // TODO: implement
+    print(pin);
   }
 
-
-
-
-
+  void createRoom() {
+    networkController.createRoom(handleRoomCreation);
+  }
 }
