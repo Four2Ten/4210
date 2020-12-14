@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:four_2_ten/GameLogic/GameController.dart';
 
 void main() {
   runApp(MyApp());
@@ -51,6 +52,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  GameController gameController = new GameController();
+
+  void _createRoom() {
+    String pin = gameController.createRoom();
+    setState(() {
+      _counter = 1000;
+    });
+    print(pin);
+  }
 
   void _incrementCounter() {
     setState(() {
@@ -108,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
+        onPressed: _createRoom,
         tooltip: 'Increment',
         child: Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
