@@ -5,6 +5,8 @@ import 'package:four_2_ten/Model/Player.dart';
 import 'package:four_2_ten/Network/NetworkController.dart';
 import 'dart:io';
 
+import 'package:four_2_ten/Utils/AnswerChecker.dart';
+
 class GameController {
   // players
   List<Player> otherPlayers = new List<Player>();
@@ -56,4 +58,9 @@ class GameController {
   void createRoom() {
     networkController.createRoom(handleRoomCreation);
   }
+
+  bool checkAnswer(String userExpression, String questionString) {
+    return AnswerChecker.check(userExpression, questionString);
+  }
+
 }
