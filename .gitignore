@@ -20,6 +20,8 @@ doc/api/
 *.js.deps
 *.js.map
 
+.idea/
+
 # The following partially copied from 
 # https://stackoverflow.com/questions/52286143/what-is-a-legit-gitignore-for-a-flutter-project-that-is-developed-in-android-st
 # Android related
