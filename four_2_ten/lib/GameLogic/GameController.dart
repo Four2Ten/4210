@@ -8,6 +8,8 @@ import 'package:four_2_ten/Network/HostNetworkController.dart';
 import 'package:four_2_ten/Network/NetworkController.dart';
 import 'dart:io';
 
+import 'package:four_2_ten/Utils/AnswerChecker.dart';
+
 class GameController {
   // platform specific channels (mainly for firebase id)
   static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
@@ -75,4 +77,9 @@ class GameController {
   void startRound() {
     (networkController as HostNetworkController).startRound(this.pin);
   }
+
+  bool checkAnswer(String userExpression, String questionString) {
+    return AnswerChecker.check(userExpression, questionString);
+  }
+
 }
