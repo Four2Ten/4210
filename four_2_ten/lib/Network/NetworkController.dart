@@ -12,6 +12,7 @@ class NetworkController {
   String pinLabel = "pin";
   String playerLabel = "player";
   String gameStateLabel = "gameState";
+  String intervalsLabel = "intervals";
 
   final int maximumNumberOfPlayers = 6;
   final maxNumberForPin = 9999;
@@ -43,14 +44,32 @@ class NetworkController {
         .set(userProfile);
   }
 
-  void attachPlayerJoinListener(String pin, Function(Player) onChange) {
+  void pauseGame(String pin) {
+    ref.child(roomLabel + "/" + pin + "/" + gameStateLabel)
+        .set(GameState.pause);
+  }
+
+  void endRound(String pin) {
+    ref.child(roomLabel + "/" + pin + "/" + gameStateLabel)
+        .set(GameState.roundEnd);
+  }
+
+  void getRoundIntervals(String pin, Function(List<int>) setRoundInterval) async {
+    ref.once().then((DataSnapshot snapshot) {
+      var data = snapshot.value;
+      var intervalInfo = data[roomLabel][pin][intervalsLabel];
+      setRoundInterval(intervalInfo);
+    });
+  }
+
+  void attachPlayerJoinListener(String pin, Function(String, Player) onChange) {
     String path = roomLabel + "/" + pin + "/" + playerLabel;
     ref.child(path).onChildChanged.listen((event) {
       String playerId = event.snapshot.key;
       var userProfile = event.snapshot.value;
       String name = userProfile["name"];
       Colour colour = StringToEnum.stringToColourEnum(userProfile["colour"]);
-      onChange(new Player(playerId, name, colour));
+      onChange(pin, new Player(playerId, name, colour));
     });
   }
 
@@ -60,6 +79,6 @@ class NetworkController {
       String gameStateString = event.snapshot.value;
       GameState gameState = StringToEnum.stringToGameStateEnum(gameStateString);
       onChange(gameState);
-    });
+     });
   }
 }

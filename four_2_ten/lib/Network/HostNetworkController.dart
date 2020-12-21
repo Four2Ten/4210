@@ -34,6 +34,12 @@ class HostNetworkController extends NetworkController {
     });
   }
 
+  void startGame(String pin, List<int> roundIntervalDurations) {
+    ref.child(roomLabel + "/" + pin + "/" + gameStateLabel)
+        .set(GameState.gameStart);
+    ref.child(roomLabel + "/" + pin + "/" + intervalsLabel).set(roundIntervalDurations);
+  }
+
   void startRound(String pin) {
     ref.child(roomLabel + "/" + pin + "/" + gameStateLabel)
         .set(GameState.roundStart);

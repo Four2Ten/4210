@@ -19,6 +19,8 @@ class GameController {
   String id; // user id
   GameState gameState;
   String pin; // room pin
+  List<int> roundDurationIntervals;
+
   // network controller
   NetworkController networkController;
   // number generator used to generate questions
@@ -57,21 +59,44 @@ class GameController {
     }
   }
 
+  void handleNewPlayer(String pin, Player player) {
+    String playerId = player.id;
+    if (playerId == this.id) {
+      currPlayer = player;
+      this.pin = pin;
+    } else {
+      otherPlayers.add(player);
+    }
+  }
+
+  void handleGameStateChange(GameState gameState) {
+    this.gameState = gameState;
+    switch(gameState) {
+      case GameState.gameStart: {
+        networkController.getRoundIntervals(this.pin,
+                (List<int> intervals) => this.roundDurationIntervals = intervals);
+        break;
+      }
+      case GameState.roundStart: {
+        break;
+      }
+      case GameState.roundEnd: {
+        break;
+      }
+      case GameState.pause: {
+        break;
+      }
+    }
+  }
+
+  void pauseGame() {
+    networkController.pauseGame(this.pin);
+  }
+
   void attachRoomListeners(String pin) {
     // listener to detect new players
-    networkController.attachPlayerJoinListener(pin, (Player player) {
-      String playerId = player.id;
-      if (playerId == this.id) {
-        currPlayer = player;
-        this.pin = pin;
-      } else {
-        otherPlayers.add(player);
-      }
-    });
-
-    networkController.attachGameStateListener(pin, (GameState gameState) {
-      this.gameState = gameState;
-    });
+    networkController.attachPlayerJoinListener(pin, handleNewPlayer);
+    networkController.attachGameStateListener(pin, handleGameStateChange);
   }
 
   void startRound() {
@@ -81,5 +106,4 @@ class GameController {
   bool checkAnswer(String userExpression, String questionString) {
     return AnswerChecker.check(userExpression, questionString);
   }
-
 }

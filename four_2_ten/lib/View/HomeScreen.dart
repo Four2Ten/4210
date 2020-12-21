@@ -171,14 +171,17 @@ class _FallingImageState extends State<FallingImage> with SingleTickerProviderSt
               children: <Widget>[
                 SlideTransition(
                   child: Container(
-                    child: new RotationTransition(
-                      turns: new AlwaysStoppedAnimation(randomRotation),
-                      child: Image.asset(
-                        this.imagePath,
-                        height: imageHeight,
-                        width: imageWidth,
-                      )
+                    child: Opacity(
+                      opacity: 0.8,
+                      child: new RotationTransition(
+                          turns: new AlwaysStoppedAnimation(randomRotation),
+                          child: Image.asset(
+                            this.imagePath,
+                            height: imageHeight,
+                            width: imageWidth,
+                          )
                       ),
+                    )
                   ),
                   position: _getOffsetAnimation(width, height, imageWidth, imageHeight)
                 )
