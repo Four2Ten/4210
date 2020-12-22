@@ -1,10 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:four_2_ten/Config/appConfig.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/Utils/Instructions.dart';
+import 'package:four_2_ten/View/CustomElevatedButton.dart';
 import 'package:four_2_ten/View/FallingImage.dart';
+import 'package:four_2_ten/View/RoomSettings.dart';
 import "dart:math";
+
+import 'package:global_configuration/global_configuration.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.title}) : super(key: key);
@@ -27,35 +30,8 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final _random = new Random();
 
-  SizedBox _getElevatedButton(String text, BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: ElevatedButton(
-          child: _getButtonText(text),
-          style: ElevatedButton.styleFrom(
-            padding: EdgeInsets.all(10),
-            primary: HexColor.fromHex('#B9E6FF'),
-            shape: const StadiumBorder(),
-          ),
-          onPressed: () {
-            print('Pressed');
-          },
-        )
-    );
-  }
-
-  FittedBox _getButtonText(String text) {
-    return FittedBox(
-        fit: BoxFit.fitWidth,
-        child: Text(
-          text,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'DidactGothic',
-            fontSize: 30,
-        )
-      )
-    );
+  _HomeScreenState() {
+    GlobalConfiguration().loadFromMap(appConfig);
   }
 
   List<Widget> _generateFallingCars(int number) {
@@ -90,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
     TextStyle textStyle = TextStyle(
       color: Colors.white,
       fontFamily: 'DidactGothic',
-      fontSize: 20,
+      fontSize: GlobalConfiguration().getValue("smallFontSize"),
       height: 1.5
     );
     return showDialog<void>(
@@ -132,8 +108,24 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  void onCreateNewRoom() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RoomSettings()),
+    );
+  }
+
+  void onJoinRoom() {
+    // TODO: implement
+  }
+
+  void onChallengeYourself() {
+    // TODO: implement
+  }
+
   @override
   Widget build(BuildContext context) {
+    var gap = MediaQuery.of(context).size.height * 0.05;
     return new MaterialApp(
       title: '4210',
       home: new Scaffold(
@@ -150,12 +142,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Image(image: AssetImage('lib/assets/images/home_screen_title.png')),
-                          SizedBox(height: 15),
-                          _getElevatedButton('create new room', context),
-                          SizedBox(height: 15),
-                          _getElevatedButton('join a room', context),
-                          SizedBox(height: 15),
-                          _getElevatedButton('challenge yourself', context),
+                          SizedBox(height: gap),
+                          CustomElevatedButton(text: 'create new room', onPress: onCreateNewRoom),
+                          SizedBox(height: gap),
+                          CustomElevatedButton(text: 'join a room', onPress: onJoinRoom),
+                          SizedBox(height: gap),
+                          CustomElevatedButton(text: 'challenge yourself', onPress: onChallengeYourself),
                         ]
                   ),
                 ),

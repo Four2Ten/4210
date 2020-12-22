@@ -86,6 +86,9 @@ class GameController {
       case GameState.pause: {
         break;
       }
+      case GameState.gameEnd: {
+        break;
+      }
     }
   }
 

@@ -3,8 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class FallingImage extends StatefulWidget {
-  FallingImage({Key key, this.title, this.imagePath, this.delay}) : super(key: key);
-  final String title;
+  FallingImage({Key key, this.imagePath, this.delay}) : super(key: key);
   final String imagePath;
   final double delay;
 

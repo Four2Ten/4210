@@ -1,8 +1,9 @@
+import 'package:global_configuration/global_configuration.dart';
+import 'package:four_2_ten/Config/stringValueGameConfig.dart';
+
 class Instructions {
-  static String getInstructions() {
-    String message = "Use addition, subtraction, multiplication and division to form numbers of ten"
-        + " with the given digits!" + "\n" + "Tap \"pass\" if it's impossible with the given digits."
-        + "\n" + "Compete with your friends and see who's the fastest";
-    return message;
+  static String getInstructions()  {
+     GlobalConfiguration().loadFromMap(stringValueGameConfig);
+     return GlobalConfiguration().getValue("instructions");
   }
 }
