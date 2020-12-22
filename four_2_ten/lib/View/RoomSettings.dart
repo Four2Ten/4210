@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
+import 'package:four_2_ten/View/CustomElevatedButton.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:four_2_ten/Config/doubleValueGameConfig.dart';
 import 'package:four_2_ten/Config/appConfig.dart';
@@ -102,12 +103,16 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
     );
   }
 
+  void handleButtonPress() {
+    //TODO: implement
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     double sidePadding = screenWidth * 0.05;
-    double headerAndSliderPadding = screenHeight * 0.1;
+    double headerAndSliderPadding = screenHeight * 0.08;
     double sliderAndDescriptionPadding = screenHeight * 0.01;
     List<String> questionSliderDescription = [
       "The first person to get ",
@@ -137,7 +142,9 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
                   SizedBox(height: headerAndSliderPadding),
                   _getSlider(_currentDurationValue, minRoundDuration, maxRoundDuration, setRoundDuration),
                   SizedBox(height: sliderAndDescriptionPadding),
-                  _getSliderText(durationSliderDescription, 1)
+                  _getSliderText(durationSliderDescription, 1),
+                  SizedBox(height: headerAndSliderPadding),
+                  CustomElevatedButton(text: "Let's Go!", onPress: handleButtonPress)
                 ]
             )
           )
