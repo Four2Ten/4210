@@ -106,6 +106,7 @@ class GameController {
     (networkController as HostNetworkController).startRound(this.pin);
   }
 
+  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
   bool checkAnswer(String userExpression, String questionString) {
     return AnswerChecker.check(userExpression, questionString);
   }

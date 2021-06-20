@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class AnswerChecker {
 
+  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
   static bool check(String userExpression, String questionString) {
     if (!_areAllDigitsUsed(userExpression, questionString)) {
       return false;
