@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:four_2_ten/GameLogic/GameController.dart';
+import 'package:four_2_ten/GameLogic/HostGameController.dart';
 import 'package:four_2_ten/Model/Colour.dart';
 
 import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/View/Commons.dart';
+import 'package:four_2_ten/View/CustomElevatedButton.dart';
 
 // For now, two players can choose the same colour.
 // TODO: only can choose unique colours.
@@ -17,8 +20,19 @@ class ChooseCarScreen extends StatefulWidget {
 }
 
 class ChooseCarScreenState extends State<ChooseCarScreen> {
+  GameController gameController;
 
-  ChooseCarScreenState() {}
+  Colour _chosenColour;
+  String _name;
+
+  ChooseCarScreenState() {
+    if (GameController.isHost) {
+      print("HERE");
+      gameController = HostGameController.getInstance();
+    } else {
+      gameController = GameController.getInstance();
+    }
+  }
 
   String _colourToAssetString(Colour colour) {
     switch (colour) {
@@ -45,9 +59,9 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: <Widget>[
-        FlatButton(onPressed: null, child: _getSizedImage(firstColour, imageWidth)),
-        FlatButton(onPressed: null, child: _getSizedImage(secondColour, imageWidth)),
-        FlatButton(onPressed: null, child: _getSizedImage(thirdColour, imageWidth)),
+        FlatButton(onPressed: () => _onPickCar(firstColour), child: _getSizedImage(firstColour, imageWidth)),
+        FlatButton(onPressed: () => _onPickCar(secondColour), child: _getSizedImage(secondColour, imageWidth)),
+        FlatButton(onPressed: () => _onPickCar(thirdColour), child: _getSizedImage(thirdColour, imageWidth)),
       ],
     );
   }
@@ -61,12 +75,13 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
     );
   }
 
-  // void _onPickCar() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => RoomSettings()),
-  //   );
-  // }
+  void _onPickCar(Colour colour) {
+    _chosenColour = colour;
+  }
+
+  void _onPressEnterGame() {
+    print("PRESSED!");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,8 +91,10 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
 
     // spacing sizes
     double topSpacing = screenHeight * 0.1;
-    double headerAndFirstRowSpacing = screenHeight * 0.15;
-    double interRowSpacing = screenHeight * 0.2;
+    double headerAndFirstRowSpacing = screenHeight * 0.1;
+    double interRowSpacing = screenHeight * 0.08;
+    double rowAndTextFieldSpacing = screenHeight * 0.05;
+    double textFieldAndButtonSpacing = screenHeight * 0.05;
     double imageWidth = screenWidth / 5;
 
     return new Scaffold(
@@ -92,7 +109,11 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
                       SizedBox(height: headerAndFirstRowSpacing),
                       _getRow(Colour.lightBlue, Colour.orange, Colour.green, imageWidth),
                       SizedBox(height: interRowSpacing),
-                      _getRow(Colour.darkBlue, Colour.pink, Colour.green, imageWidth),
+                      _getRow(Colour.darkBlue, Colour.pink, Colour.red, imageWidth),
+                      SizedBox(height: rowAndTextFieldSpacing),
+                      TextField(), // TODO: style this
+                      SizedBox(height: textFieldAndButtonSpacing),
+                      CustomElevatedButton(text: 'Enter Game', onPress: _onPressEnterGame),
                     ]
                 )
             )

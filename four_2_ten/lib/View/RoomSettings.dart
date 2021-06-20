@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:four_2_ten/GameLogic/HostGameController.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/View/ChooseCarScreen.dart';
 import 'package:four_2_ten/View/CustomElevatedButton.dart';
@@ -18,6 +19,9 @@ class RoomSettings extends StatefulWidget {
   RoomSettingsState createState() => RoomSettingsState();
 }
 class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderStateMixin {
+
+  HostGameController gameController;
+
   double _currentNumberOfQuestions;
   double _currentDurationValue;
   double minNumOfQuestions;
@@ -26,6 +30,8 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   double maxRoundDuration;
 
   RoomSettingsState() {
+    gameController = HostGameController.getInstance();
+
     GlobalConfiguration().loadFromMap(doubleValueGameConfig);
     GlobalConfiguration().loadFromMap(appConfig);
     minNumOfQuestions = GlobalConfiguration().getValue("minNumOfQuestions");
@@ -96,8 +102,10 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   }
 
   void handleButtonPress() {
-    //TODO: implement
+    gameController.setRoomSettings(_currentNumberOfQuestions.round(),
+        _currentDurationValue.round());
 
+    //TODO: only navigate when a room is created in network
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ChooseCarScreen()),

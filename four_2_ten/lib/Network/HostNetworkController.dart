@@ -5,7 +5,19 @@ import 'NetworkController.dart';
 import 'dart:math';
 
 class HostNetworkController extends NetworkController {
+
+  // singleton
+  static HostNetworkController instance;
+
   final _random = new Random();
+
+  static getInstance() {
+    if (instance == null) {
+      instance = HostNetworkController();
+    }
+
+    return instance;
+  }
 
   String _generateNewPin(List<String> existingRoomPins) {
     String newPin = (minNumberForPin + _random.nextInt(maxNumberForPin - minNumberForPin)).toString();

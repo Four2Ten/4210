@@ -11,6 +11,11 @@ import 'dart:io';
 import 'package:four_2_ten/Utils/AnswerChecker.dart';
 
 class GameController {
+
+  // singleton
+  static GameController instance;
+  static bool isHost = false; //default
+
   // platform specific channels (mainly for firebase id)
   static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // game information
@@ -27,7 +32,15 @@ class GameController {
   NumberGenerator numberGenerator = new NumberGenerator();
 
   GameController() {
-    networkController = new NetworkController();
+    networkController = NetworkController.getInstance();
+  }
+
+  static GameController getInstance() {
+    if (instance == null) {
+      instance = GameController();
+    }
+
+    return instance;
   }
 
   Future<String> _getId() async {
