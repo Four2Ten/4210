@@ -7,9 +7,6 @@ import 'package:four_2_ten/Utils/StringToEnum.dart';
 
 class NetworkController {
 
-  // singleton
-  static NetworkController instance;
-
   final ref = FirebaseDatabase.instance.reference();
   String takenRoomPinsLabel = "takenRoomPins"; // for storing room ids
   String roomLabel = "rooms"; // for storing rooms and players
@@ -21,14 +18,6 @@ class NetworkController {
   final int maximumNumberOfPlayers = 6;
   final maxNumberForPin = 9999;
   final minNumberForPin = 1000;
-
-  static NetworkController getInstance() {
-    if (instance == null) {
-      instance = NetworkController();
-    }
-
-    return instance;
-  }
 
   void joinRoom(String pin, Player player) {
     ref.once().then((DataSnapshot snapshot) {

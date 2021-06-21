@@ -30,7 +30,7 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   double maxRoundDuration;
 
   RoomSettingsState() {
-    gameController = HostGameController.getInstance();
+    gameController = HostGameController();
 
     GlobalConfiguration().loadFromMap(doubleValueGameConfig);
     GlobalConfiguration().loadFromMap(appConfig);
@@ -108,7 +108,7 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
     //TODO: only navigate when a room is created in network
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ChooseCarScreen()),
+      MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),
     );
   }
 

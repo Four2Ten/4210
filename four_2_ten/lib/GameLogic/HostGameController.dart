@@ -6,24 +6,13 @@ import 'package:four_2_ten/GameLogic/GameController.dart';
 
 class HostGameController extends GameController {
 
-  // singleton
-  static HostGameController instance;
-
   Timer timer;
   int numberOfQuestions;
   int roundDuration;
 
-  HostGameController() {
-    networkController = HostNetworkController.getInstance();
-    GameController.isHost = true;
-  }
-
-  static HostGameController getInstance() {
-    if (instance == null) {
-      instance = HostGameController();
-    }
-
-    return instance;
+  HostGameController() : super() {
+    networkController = HostNetworkController();
+    super.isHost = true;
   }
 
   void handleRoomCreation(String pin) {
