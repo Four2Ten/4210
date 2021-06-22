@@ -4,6 +4,7 @@ import 'package:four_2_ten/Model/Colour.dart';
 import 'package:four_2_ten/Model/Player.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/View/Commons.dart';
+import 'package:four_2_ten/View/MainGameScreen.dart';
 import 'package:global_configuration/global_configuration.dart';
 
 class WaitingRoom extends StatefulWidget {
@@ -61,7 +62,7 @@ class _WaitingRoomState extends State<WaitingRoom> {
 
   Widget _getAllPlayerIcons(double screenWidth, double screenHeight) {
     double imageWidth = screenWidth / 5;
-    double spacing = screenHeight * 0.05;
+    double spacing = screenHeight * 0.03;
 
     return Column(
       children: [
@@ -86,6 +87,41 @@ class _WaitingRoomState extends State<WaitingRoom> {
     );
   }
 
+  void _onPressStart() {
+    //TODO: implement
+
+    //TODO: only navigate when joined successfully in network
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainGameScreen(gameController)),
+    );
+  }
+
+  Widget _getStartButton(double width) {
+    return FlatButton(
+      onPressed: _onPressStart,
+      child: Stack(
+        alignment: Alignment.center,
+        children: [
+          Image(
+            image: AssetImage('lib/assets/images/start_engine_button.png'),
+            width: width,
+          ),
+          Center(
+            child: Text(
+              'Start\nEngine',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: "WalterTurncoat",
+                fontSize: smallFontSize,
+              ),
+            ),
+          )
+        ],
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -95,7 +131,8 @@ class _WaitingRoomState extends State<WaitingRoom> {
     double sidePadding = screenWidth * 0.05;
     double topSpacing = screenHeight * 0.1;
     double headerAndPinSpacing = screenHeight * 0.06;
-    double pinAndCarsSpacing = screenHeight * 0.1;
+    double pinAndCarsSpacing = screenHeight * 0.08;
+    double carsAndButtonSpacing = screenHeight * 0.02;
 
     return new Scaffold(
       backgroundColor: HexColor.fromHex('#372549'),
@@ -109,7 +146,9 @@ class _WaitingRoomState extends State<WaitingRoom> {
               SizedBox(height: headerAndPinSpacing),
               Commons.getTitle(gameController.pin.toString()), // TODO: style this
               SizedBox(height: pinAndCarsSpacing),
-              _getAllPlayerIcons(screenWidth, screenHeight)
+              _getAllPlayerIcons(screenWidth, screenHeight),
+              SizedBox(height: carsAndButtonSpacing),
+              _getStartButton(screenWidth / 3),
             ]
           ),
           )
