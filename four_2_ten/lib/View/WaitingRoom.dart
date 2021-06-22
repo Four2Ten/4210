@@ -134,12 +134,12 @@ class _WaitingRoomState extends State<WaitingRoom> {
     double pinAndCarsSpacing = screenHeight * 0.08;
     double carsAndButtonSpacing = screenHeight * 0.02;
 
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: HexColor.fromHex('#372549'),
-      body: new Container(
-        padding: new EdgeInsets.fromLTRB(sidePadding, 0, sidePadding, 0),
+      body: Container(
+        padding: EdgeInsets.fromLTRB(sidePadding, 0, sidePadding, 0),
         child: Center(
-          child: new Column(
+          child: Column(
             children: <Widget>[
               SizedBox(height: topSpacing),
               Commons.getTitle('Your Room Pin'),
