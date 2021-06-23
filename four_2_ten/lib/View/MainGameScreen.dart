@@ -35,7 +35,7 @@ class _MainGameScreenState extends State<MainGameScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               SizedBox(height: topSpacing),
-              GameKeyboard(),
+              GameKeyboard([5, 6, 7, 8]), // TODO: change hardcoding
             ]
           ),
         )
