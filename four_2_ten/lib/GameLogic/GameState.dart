@@ -1,4 +1,5 @@
 enum GameState {
+  gameStart,
   roundEnd,
   roundStart,
   gameEnd,

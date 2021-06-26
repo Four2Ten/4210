@@ -9,7 +9,7 @@ class AnswerChecker {
 
     var finalValue = _evaluate(userExpression);
 
-    return finalValue == 10;
+    return (finalValue - 10.0).abs() < 0.0000001; // prevent floating point rounding error
   }
 
   static bool _areAllDigitsUsed(String userExpression, String questionString) {
@@ -35,7 +35,7 @@ class AnswerChecker {
   }
 
   // `tokens` is a string
-  static int _evaluate(String tokens) {
+  static double _evaluate(String tokens) {
     // stack to store integer values
     var values = List.empty(growable: true);
 
@@ -53,7 +53,7 @@ class AnswerChecker {
         // current token is an opening bracket, push it to operations stack
         operators.add(tokens[counter]);
       } else if (RegExp(r'^[0-9]').hasMatch(tokens[counter])) {
-        var value = int.parse(tokens[counter]);
+        var value = double.parse(tokens[counter]);
 
         // There may be more than one digits in the number.
         // This is not allowed.
@@ -121,7 +121,7 @@ class AnswerChecker {
     }
   }
 
-  static double _performOperation(int val1, String operator, int val2) {
+  static double _performOperation(double val1, String operator, double val2) {
     if (operator == "+") {
       return (val1 + val2).toDouble();
     } else if (operator == "-") {
