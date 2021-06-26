@@ -15,8 +15,6 @@ class GameController {
   static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // network controller
   NetworkController networkController = new NetworkController();
-  // number generator used to generate questions
-  NumberGenerator numberGenerator = new NumberGenerator();
 
   Future<String> _getId() async {
     try {
