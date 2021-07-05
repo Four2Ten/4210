@@ -17,6 +17,19 @@ class _MainGameScreenState extends State<MainGameScreen> {
 
   _MainGameScreenState(this.gameController);
 
+  // Callback function for the "GO!" button in keyboard
+  void _onPressGo(String answer) {
+    // TODO: implement
+    print("pressed GO! The current string is: ");
+    print(answer);
+  }
+
+  // Callback function for the "PASS!" button in keyboard
+  void _onPressPass() {
+    // TODO: implement
+    print("pressed PASS");
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -35,7 +48,7 @@ class _MainGameScreenState extends State<MainGameScreen> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
               SizedBox(height: topSpacing),
-              GameKeyboard([5, 6, 7, 8]), // TODO: change hardcoding
+              GameKeyboard([5, 6, 7, 8], _onPressGo, _onPressPass), // TODO: change hardcoding
             ]
           ),
         )

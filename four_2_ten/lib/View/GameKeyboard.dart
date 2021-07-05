@@ -1,31 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:four_2_ten/Model/Colour.dart';
+import 'package:four_2_ten/Utils/EnumToDartColor.dart';
+import 'package:four_2_ten/Utils/HexColor.dart';
 
 class GameKeyboard extends StatefulWidget {
   final List<int> numbers;
+  final Function goCallBack;
+  final Function passCallBack;
 
-  GameKeyboard(this.numbers);
+  GameKeyboard(this.numbers, this.goCallBack, this.passCallBack);
 
   @override
-  _GameKeyboardState createState() => _GameKeyboardState(numbers);
+  _GameKeyboardState createState() => _GameKeyboardState(numbers, goCallBack, passCallBack);
 }
 
 class _GameKeyboardState extends State<GameKeyboard> {
   final List<int> numbers;
+  final Function goCallBack;
+  final Function passCallBack;
+
   List<bool> isPressedStates = [false, false, false, false]; // whether user has pressed a number button
   String currentString = ""; // what the user has entered on the keyboard
+  List<int> pressedIndices = []; // indices of numbers that have been pressed
 
   static const GO_BUTTON_TEXT = "GO!";
   static const PASS_BUTTON_TEXT = "PASS";
 
-  _GameKeyboardState(this.numbers);
+  _GameKeyboardState(this.numbers, this.goCallBack, this.passCallBack);
 
   void _onPressKeyboardButton(String text) {
     if (text == GO_BUTTON_TEXT) {
-      // TODO: implement
-      print("pressed GO");
+      goCallBack(currentString);
     } else if (text == PASS_BUTTON_TEXT) {
-      // TODO: implement
-      print("pressed PASS");
+      passCallBack();
     } else {
       setState(() {
         currentString += text;
@@ -38,7 +45,8 @@ class _GameKeyboardState extends State<GameKeyboard> {
       width: size,
       height: size,
       child: Card(
-        color: isPressed ? Colors.grey : Colors.lightGreenAccent, // TODO: use our colour
+        color: isPressed ? HexColor.fromHex('#D0B4E7') : HexColor.fromHex('#EDDDFB'),
+        elevation: 3,
         child: FlatButton(
           padding: EdgeInsets.zero,
           onPressed: () {
@@ -50,6 +58,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
             if (_numeric.hasMatch(text)) {
               setState(() {
                 isPressedStates[index] = true;
+                pressedIndices.add(index);
               });
             }
           },
@@ -102,48 +111,63 @@ class _GameKeyboardState extends State<GameKeyboard> {
 
   // Includes display text + delete button
   Widget _getKeyboardTop() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text(
-          currentString,
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: "WalterTurncoat",
-            fontSize: 35, // TODO: standardise later
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 5),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            currentString,
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: "WalterTurncoat",
+              fontSize: 40, // TODO: standardise later
+            ),
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.backspace),
-          tooltip: 'Backspace',
-          onPressed: () {
-            setState(() {
-              if (currentString != null && currentString.length > 0) {
-                currentString = currentString.substring(0, currentString.length - 1);
-              }
-            });
-          },
-        ),
-      ],
+          IconButton(
+            icon: const Icon(Icons.backspace),
+            tooltip: 'Backspace',
+            onPressed: _onDelete,
+          ),
+        ],
+      ),
     );
+  }
+
+  void _onDelete() {
+    if (currentString != null && currentString.length > 0) {
+      setState(() {
+        String lastCharacter = currentString.substring(currentString.length - 1);
+        RegExp _numeric = RegExp(r'^[0-9]$');
+        if (_numeric.hasMatch(lastCharacter)) {
+          // If the last character is a number, we need to un-highlight the keyboard cell.
+          int lastIndex = pressedIndices.removeLast();
+          isPressedStates[lastIndex] = false;
+        }
+
+        // Remove the last character from the keyboard display
+        currentString = currentString.substring(0, currentString.length - 1);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    double buttonWidth = screenWidth / 5;
+    double cardHeight = screenHeight / 2;
 
     // TODO: figure out how to remove the horizontal margins
     return SizedBox(
-      // width: screenWidth,
-      height: screenHeight / 2,
+      height: cardHeight,
       child: Card(
         margin: EdgeInsets.zero,
-        color: Colors.lightBlue, // TODO: use our colour
+        color: EnumToDartColor.fromColourEnum(Colour.lightBlue), // TODO: change color according to player
         child: Column(
           children: [
             _getKeyboardTop(),
-            _getButtons(screenWidth / 6),
+            _getButtons(buttonWidth),
           ],
         )
       ),
