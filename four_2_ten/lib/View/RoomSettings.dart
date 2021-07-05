@@ -1,11 +1,14 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:four_2_ten/GameLogic/HostGameController.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
+import 'package:four_2_ten/View/ChooseCarScreen.dart';
 import 'package:four_2_ten/View/CustomElevatedButton.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:four_2_ten/Config/doubleValueGameConfig.dart';
 import 'package:four_2_ten/Config/appConfig.dart';
+import 'package:four_2_ten/View/Commons.dart';
 
 class RoomSettings extends StatefulWidget {
   RoomSettings({Key key, this.title}) : super(key: key);
@@ -16,6 +19,9 @@ class RoomSettings extends StatefulWidget {
   RoomSettingsState createState() => RoomSettingsState();
 }
 class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderStateMixin {
+
+  HostGameController gameController;
+
   double _currentNumberOfQuestions;
   double _currentDurationValue;
   double minNumOfQuestions;
@@ -24,6 +30,8 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   double maxRoundDuration;
 
   RoomSettingsState() {
+    gameController = HostGameController();
+
     GlobalConfiguration().loadFromMap(doubleValueGameConfig);
     GlobalConfiguration().loadFromMap(appConfig);
     minNumOfQuestions = GlobalConfiguration().getValue("minNumOfQuestions");
@@ -32,16 +40,6 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
     maxRoundDuration = GlobalConfiguration().getValue("maxRoundDuration");
     _currentNumberOfQuestions = ((minNumOfQuestions + maxNumOfQuestions) / 2).roundToDouble();
     _currentDurationValue = ((minRoundDuration + maxRoundDuration) / 2).roundToDouble();
-  }
-
-  Text _getText(String string) {
-    double bigFontSize = GlobalConfiguration().getValue("bigFontSize");
-    TextStyle textStyle = TextStyle(
-      color: Colors.white,
-      fontFamily: "WalterTurncoat",
-      fontSize: bigFontSize,
-    );
-    return new Text(string, style: textStyle, textAlign: TextAlign.center);
   }
 
   RichText _getSliderText(List<String> text, int indexToBold) {
@@ -104,7 +102,14 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   }
 
   void handleButtonPress() {
-    //TODO: implement
+    gameController.setRoomSettings(_currentNumberOfQuestions.round(),
+        _currentDurationValue.round());
+
+    //TODO: only navigate when a room is created in network
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),
+    );
   }
 
   @override
@@ -132,13 +137,13 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
             child: new Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  _getText("number of questions"),
+                  Commons.getTitle("number of questions"),
                   SizedBox(height: headerAndSliderPadding),
                   _getSlider(_currentNumberOfQuestions, minNumOfQuestions, maxNumOfQuestions, setNumOfQuestions),
                   SizedBox(height: sliderAndDescriptionPadding),
                   _getSliderText(questionSliderDescription, 1),
                   SizedBox(height: headerAndSliderPadding),
-                  _getText("timer duration"),
+                  Commons.getTitle("timer duration"),
                   SizedBox(height: headerAndSliderPadding),
                   _getSlider(_currentDurationValue, minRoundDuration, maxRoundDuration, setRoundDuration),
                   SizedBox(height: sliderAndDescriptionPadding),

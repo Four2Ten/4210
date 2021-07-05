@@ -6,6 +6,7 @@ import 'package:four_2_ten/Model/Player.dart';
 import 'package:four_2_ten/Utils/StringToEnum.dart';
 
 class NetworkController {
+
   final ref = FirebaseDatabase.instance.reference();
   String takenRoomPinsLabel = "takenRoomPins"; // for storing room ids
   String roomLabel = "rooms"; // for storing rooms and players

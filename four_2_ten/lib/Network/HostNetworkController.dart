@@ -5,6 +5,7 @@ import 'NetworkController.dart';
 import 'dart:math';
 
 class HostNetworkController extends NetworkController {
+
   final _random = new Random();
 
   String _generateNewPin(List<String> existingRoomPins) {

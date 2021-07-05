@@ -5,16 +5,24 @@ import 'package:four_2_ten/Network/HostNetworkController.dart';
 import 'package:four_2_ten/GameLogic/GameController.dart';
 
 class HostGameController extends GameController {
+
   Timer timer;
+  int numberOfQuestions;
   int roundDuration;
 
-  HostGameController(int roundDuration) {
-    networkController = new HostNetworkController();
-    this.roundDuration = roundDuration;
+  HostGameController() : super() {
+    networkController = HostNetworkController();
+    super.isHost = true;
   }
+
   void handleRoomCreation(String pin) {
     // TODO: inform view of room creation
     print(pin);
+  }
+
+  void setRoomSettings(int numberOfQuestions, int timerDuration) {
+    this.numberOfQuestions = numberOfQuestions;
+    this.roundDuration = timerDuration;
   }
 
   void createRoom() {

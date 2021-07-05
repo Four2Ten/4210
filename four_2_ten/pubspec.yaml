@@ -55,6 +55,7 @@ flutter:
      - lib/assets/images/lightblue_car.png
      - lib/assets/images/green_car.png
      - lib/assets/images/pink_car.png
+     - lib/assets/images/start_engine_button.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

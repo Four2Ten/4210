@@ -11,6 +11,9 @@ import 'dart:io';
 import 'package:four_2_ten/Utils/AnswerChecker.dart';
 
 class GameController {
+
+  bool isHost = false; //default
+
   // platform specific channels (mainly for firebase id)
   static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // game information
@@ -27,7 +30,7 @@ class GameController {
   NumberGenerator numberGenerator = new NumberGenerator();
 
   GameController() {
-    networkController = new NetworkController();
+    networkController = NetworkController();
   }
 
   Future<String> _getId() async {
@@ -46,7 +49,8 @@ class GameController {
     }
   }
 
-  void joinRoom(String pin, String name, Colour colour) async {
+  // note: removed `pin` from arguments as it can be obtained from class property
+  void joinRoom(String name, Colour colour) async {
     if (this.id == null) {
       this.id = await _getId();
     }
@@ -106,6 +110,7 @@ class GameController {
     (networkController as HostNetworkController).startRound(this.pin);
   }
 
+  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
   bool checkAnswer(String userExpression, String questionString) {
     return AnswerChecker.check(userExpression, questionString);
   }
