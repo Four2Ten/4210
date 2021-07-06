@@ -3,18 +3,21 @@ import 'package:four_2_ten/GameLogic/HostGameController.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/View/ChooseCarScreen.dart';
 import 'package:four_2_ten/View/CustomElevatedButton.dart';
+import 'package:four_2_ten/View/MainGameScreen.dart';
 import 'package:global_configuration/global_configuration.dart';
 import 'package:four_2_ten/Config/doubleValueGameConfig.dart';
 import 'package:four_2_ten/Config/appConfig.dart';
 import 'package:four_2_ten/View/Commons.dart';
 
 class RoomSettings extends StatefulWidget {
-  RoomSettings({Key key, this.title}) : super(key: key);
 
   final String title;
+  final bool isSoloMode;
+
+  RoomSettings({Key key, this.title, this.isSoloMode = false}) : super(key: key);
 
   @override
-  RoomSettingsState createState() => RoomSettingsState();
+  RoomSettingsState createState() => RoomSettingsState(isSoloMode: isSoloMode);
 }
 class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderStateMixin {
 
@@ -27,8 +30,9 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   double minRoundDuration;
   double maxRoundDuration;
 
-  RoomSettingsState() {
+  RoomSettingsState({bool isSoloMode = false}) {
     gameController = HostGameController();
+    gameController.isSolo = isSoloMode;
 
     GlobalConfiguration().loadFromMap(doubleValueGameConfig);
     GlobalConfiguration().loadFromMap(appConfig);
@@ -103,11 +107,20 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
     gameController.setRoomSettings(_currentNumberOfQuestions.round(),
         _currentDurationValue.round());
 
-    //TODO: only navigate when a room is created in network
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),
-    );
+    if (gameController.isSolo) {
+      // "Challenge Yourself" Mode
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => MainGameScreen(gameController)),
+      );
+    } else {
+      // Multiplayer Mode
+      //TODO: only navigate when a room is created in network
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),
+      );
+    }
   }
 
   @override

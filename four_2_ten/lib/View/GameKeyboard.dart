@@ -8,34 +8,34 @@ class GameKeyboard extends StatefulWidget {
   final Function goCallBack;
   final Function passCallBack;
 
-  GameKeyboard(this.numbers, this.goCallBack, this.passCallBack);
-
-  @override
-  _GameKeyboardState createState() => _GameKeyboardState(numbers, goCallBack, passCallBack);
-}
-
-class _GameKeyboardState extends State<GameKeyboard> {
-  final List<int> numbers;
-  final Function goCallBack;
-  final Function passCallBack;
-
+  // Put here temporarily as a quick fix
   List<bool> isPressedStates = [false, false, false, false]; // whether user has pressed a number button
   String currentString = ""; // what the user has entered on the keyboard
   List<int> pressedIndices = []; // indices of numbers that have been pressed
 
+  GameKeyboard(this.numbers, this.goCallBack, this.passCallBack);
+
+  @override
+  _GameKeyboardState createState() => _GameKeyboardState(goCallBack, passCallBack);
+}
+
+class _GameKeyboardState extends State<GameKeyboard> {
+  final Function goCallBack;
+  final Function passCallBack;
+
   static const GO_BUTTON_TEXT = "GO!";
   static const PASS_BUTTON_TEXT = "PASS";
 
-  _GameKeyboardState(this.numbers, this.goCallBack, this.passCallBack);
+  _GameKeyboardState(this.goCallBack, this.passCallBack);
 
   void _onPressKeyboardButton(String text) {
     if (text == GO_BUTTON_TEXT) {
-      goCallBack(currentString);
+      goCallBack(widget.currentString);
     } else if (text == PASS_BUTTON_TEXT) {
       passCallBack();
     } else {
       setState(() {
-        currentString += text;
+        widget.currentString += text;
       });
     }
   }
@@ -57,8 +57,8 @@ class _GameKeyboardState extends State<GameKeyboard> {
             RegExp _numeric = RegExp(r'^[0-9]$');
             if (_numeric.hasMatch(text)) {
               setState(() {
-                isPressedStates[index] = true;
-                pressedIndices.add(index);
+                widget.isPressedStates[index] = true;
+                widget.pressedIndices.add(index);
               });
             }
           },
@@ -82,9 +82,9 @@ class _GameKeyboardState extends State<GameKeyboard> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         _getButton(texts[0], size, fontSizes[0],
-            firstIndex == null ? false : isPressedStates[firstIndex], index: firstIndex),
+            firstIndex == null ? false : widget.isPressedStates[firstIndex], index: firstIndex),
         _getButton(texts[1], size, fontSizes[1],
-            secondIndex == null ? false : isPressedStates[secondIndex], index: secondIndex),
+            secondIndex == null ? false : widget.isPressedStates[secondIndex], index: secondIndex),
         _getButton(texts[2], size, fontSizes[2], false),
         _getButton(texts[3], size, fontSizes[3], false),
       ],
@@ -99,9 +99,9 @@ class _GameKeyboardState extends State<GameKeyboard> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        _getRow(size, [numbers[0].toString(), numbers[1].toString(), '+', '-'],
+        _getRow(size, [widget.numbers[0].toString(), widget.numbers[1].toString(), '+', '-'],
             List.filled(4, symbolFontSize), firstIndex: 0, secondIndex: 1),
-        _getRow(size, [numbers[2].toString(), numbers[3].toString(), '×', '÷'],
+        _getRow(size, [widget.numbers[2].toString(), widget.numbers[3].toString(), '×', '÷'],
             List.filled(4, symbolFontSize), firstIndex: 2, secondIndex: 3),
         _getRow(size, ['(', ')', GO_BUTTON_TEXT, PASS_BUTTON_TEXT],
             [symbolFontSize, symbolFontSize, wordFontSize, wordFontSize]),
@@ -117,7 +117,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           Text(
-            currentString,
+            widget.currentString,
             style: TextStyle(
               color: Colors.black,
               fontFamily: "WalterTurncoat",
@@ -135,18 +135,18 @@ class _GameKeyboardState extends State<GameKeyboard> {
   }
 
   void _onDelete() {
-    if (currentString != null && currentString.length > 0) {
+    if (widget.currentString != null && widget.currentString.length > 0) {
       setState(() {
-        String lastCharacter = currentString.substring(currentString.length - 1);
+        String lastCharacter = widget.currentString.substring(widget.currentString.length - 1);
         RegExp _numeric = RegExp(r'^[0-9]$');
         if (_numeric.hasMatch(lastCharacter)) {
           // If the last character is a number, we need to un-highlight the keyboard cell.
-          int lastIndex = pressedIndices.removeLast();
-          isPressedStates[lastIndex] = false;
+          int lastIndex = widget.pressedIndices.removeLast();
+          widget.isPressedStates[lastIndex] = false;
         }
 
         // Remove the last character from the keyboard display
-        currentString = currentString.substring(0, currentString.length - 1);
+        widget.currentString = widget.currentString.substring(0, widget.currentString.length - 1);
       });
     }
   }

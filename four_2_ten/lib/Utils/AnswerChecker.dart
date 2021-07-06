@@ -115,7 +115,7 @@ class AnswerChecker {
   static int _getPrecedence(operation) {
     if (operation == "+" || operation == "-") {
       return 1;
-    } else if (operation == "*" || operation == "/") {
+    } else if (operation == "×" || operation == "÷") {
       return 2;
     } else {
       return 0;
@@ -127,9 +127,9 @@ class AnswerChecker {
       return (val1 + val2).toDouble();
     } else if (operator == "-") {
       return (val1 - val2).toDouble();
-    } else if (operator == "*") {
+    } else if (operator == "×") {
       return (val1 * val2).toDouble();
-    } else if (operator == "/") {
+    } else if (operator == "÷") {
       return val1 / val2;
     } else {
       throw new FormatException("Invalid operator!");

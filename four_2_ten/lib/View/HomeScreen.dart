@@ -124,7 +124,10 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onChallengeYourself() {
-    // TODO: implement
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RoomSettings(isSoloMode: true)),
+    );
   }
 
   @override

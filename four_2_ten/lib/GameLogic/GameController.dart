@@ -23,11 +23,13 @@ class GameController {
   GameState gameState;
   String pin; // room pin
   List<int> roundDurationIntervals;
+  String currentQuestion;
 
   // network controller
   NetworkController networkController;
-  // number generator used to generate questions
-  NumberGenerator numberGenerator = new NumberGenerator();
+
+  // Callback to update UI
+  Function uiCallback;
 
   GameController() {
     networkController = NetworkController();
