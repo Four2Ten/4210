@@ -20,7 +20,6 @@ class _NumberKeyboardState extends State<NumberKeyboard> {
   _NumberKeyboardState(this.pressCallback, this.deleteCallback);
 
   void _onPressKeyboardButton(int digit) {
-    // TODO: implement
     pressCallback(digit);
   }
 
@@ -61,26 +60,37 @@ class _NumberKeyboardState extends State<NumberKeyboard> {
       ],
     );
   }
-
-  // `size refers to button size`
-  Widget _getButtons(double size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _getColumn(size, [1, 4, 7]),
-        _getColumn(size, [2, 5, 8]),
-        _getColumn(size, [3, 6, 9]),
-        IconButton(
+  
+  Widget _getDeleteButton(double width, double height) {
+    return SizedBox(
+      width: width,
+      height: height,
+      child: Card(
+        color: HexColor.fromHex('#EDDDFB'),
+        elevation: 3,
+        child: IconButton(
           icon: const Icon(Icons.backspace),
           tooltip: 'Backspace',
           onPressed: _onDelete,
         ),
+      ),
+    );
+  }
+
+  // `size refers to button size`
+  Widget _getButtons(double buttonSize, double deleteWidth, double deleteHeight) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [
+        _getColumn(buttonSize, [1, 4, 7]),
+        _getColumn(buttonSize, [2, 5, 8]),
+        _getColumn(buttonSize, [3, 6, 9]),
+        _getDeleteButton(deleteWidth, deleteHeight),
       ],
     );
   }
 
   void _onDelete() {
-    // TODO: implement
     deleteCallback();
   }
 
@@ -89,7 +99,9 @@ class _NumberKeyboardState extends State<NumberKeyboard> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     double buttonWidth = screenWidth / 5;
-    double cardHeight = screenHeight / 2;
+    double cardHeight = screenHeight / 2.3;
+    double deleteButtonWidth = screenWidth / 6;
+    double deleteButtonHeight = screenHeight / 2.5;
 
     // TODO: figure out how to remove the horizontal margins
     return SizedBox(
@@ -97,7 +109,7 @@ class _NumberKeyboardState extends State<NumberKeyboard> {
       child: Card(
           margin: EdgeInsets.zero,
           color: EnumToDartColor.fromColourEnum(Colour.lightBlue), // TODO: randomise color
-          child: _getButtons(buttonWidth)
+          child: _getButtons(buttonWidth, deleteButtonWidth, deleteButtonHeight),
       ),
     );
   }

@@ -19,7 +19,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   void _onPressKey(int digit) {
     print("pressed: " + digit.toString());
     setState(() {
-      currentDigits.add(digit);
+      if (currentDigits.length < 4) {
+        currentDigits.add(digit);
+      }
     });
   }
 
@@ -69,9 +71,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
 
     // spacing sizes
     double sidePadding = screenWidth * 0.05;
-    double topSpacing = screenHeight * 0.05;
-    double inputAndButtonSpacing = screenHeight * 0.06;
-    double buttonAndKeyboardSpacing = screenHeight * 0.08;
+    double topSpacing = screenHeight * 0.08;
+    double inputAndButtonSpacing = screenHeight * 0.1;
+    double buttonAndKeyboardSpacing = screenHeight * 0.06;
 
     return Scaffold(
         backgroundColor: HexColor.fromHex('#372549'),
@@ -85,7 +87,10 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                   SizedBox(height: topSpacing),
                   _getInput(),
                   SizedBox(height: inputAndButtonSpacing),
-                  CustomElevatedButton(text: 'head to garage', onPress: _onPressButton),
+                  Opacity(
+                    child: CustomElevatedButton(text: 'head to garage', onPress: _onPressButton),
+                    opacity: currentDigits.length == 4 ? 1.0 : 0.0,
+                  ),
                   SizedBox(height: buttonAndKeyboardSpacing),
                   NumberKeyboard(_onPressKey, _onDelete),
                 ]
