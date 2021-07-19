@@ -51,6 +51,77 @@ class GameController {
     }
   }
 
+  void joinRoom(Function onJoin) {
+    var networkCallback = (List<Player> players) {
+      otherPlayers = players.where((element) => element.name != currPlayer.name).toList();
+      onJoin();
+    };
+
+    networkController.joinRoom(pin, currPlayer.name, currPlayer.colour, networkCallback);
+  }
+
+  void attachReadyListener(Function onReceiveReady) {
+    var networkCallback = (String name) {
+      if (name == currPlayer.name) {
+        currPlayer.isReady = true;
+      } else {
+        otherPlayers.forEach((player) {
+          if (player.name == name) {
+            player.isReady = true;
+          }
+        });
+      }
+
+      onReceiveReady();
+    };
+
+    networkController.attachReadyListener(networkCallback);
+  }
+
+  void indicateReady() {
+    networkController.indicateReady(pin, currPlayer.name);
+  }
+
+  void attachGameStartListener(Function onStartGame) {
+    networkController.attachGameStartListener(onStartGame);
+  }
+
+  void attachMainGameListeners(Function onStartRound, Function onGetCorrect,
+      Function onTimeUp, Function onEndGame) {
+    var onGetCorrectCallback = (String name, int score, String correctAnswer) {
+      if (currPlayer.name == name) {
+        currPlayer.score = score;
+      } else {
+        otherPlayers.forEach((player) {
+          if (player.name == name) {
+            player.score = score;
+          }
+        });
+      }
+
+      onGetCorrect(name, score, correctAnswer);
+    };
+
+    var onStartRoundCallback = (int round, String question) {
+      // TODO: is round number useful here?
+      currentQuestion = question;
+      onStartRound();
+    };
+
+    networkController.attachMainGameListeners(onStartRoundCallback, onGetCorrectCallback,
+        onTimeUp, onEndGame);
+  }
+
+  void getCorrect(String roomNumber, String name, int score, String correctAnswer) {
+    networkController.getCorrect(roomNumber, name, score, correctAnswer);
+  }
+
+  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
+  bool checkAnswer(String userExpression, String questionString) {
+    return AnswerChecker.check(userExpression, questionString);
+  }
+
+  /*
   // note: removed `pin` from arguments as it can be obtained from class property
   void joinRoom(String name, Colour colour) async {
     if (this.id == null) {
@@ -111,9 +182,5 @@ class GameController {
   void startRound() {
     (networkController as HostNetworkController).startRound(this.pin);
   }
-
-  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
-  bool checkAnswer(String userExpression, String questionString) {
-    return AnswerChecker.check(userExpression, questionString);
-  }
+   */
 }

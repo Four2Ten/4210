@@ -57,6 +57,8 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     // TODO: implement this properly
     GameController gameController = new GameController();
 
+    gameController.pin = currentDigits.map((e) => e.toString()).join("");
+
     //TODO: only navigate when network responds success
     Navigator.push(
       context,

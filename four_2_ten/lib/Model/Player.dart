@@ -5,11 +5,13 @@ class Player {
   String name;
   int score = 0;
   Colour colour;
+  bool isReady;
 
   Player(String id, String name, Colour colour) {
     this.id = id;
     this.name = name;
     this.colour = colour;
+    this.isReady = false;
   }
 
   void incrementScore() {

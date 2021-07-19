@@ -24,15 +24,45 @@ class _MainGameScreenState extends State<MainGameScreen> {
     this.gameController = gameController;
     this.gameController.uiCallback = startNewRound;
 
-    // Solo Mode
     if (gameController.isHost && (gameController as HostGameController).isSolo) {
+      // Solo Mode
       (gameController as HostGameController).startSoloRound();
       List<int> newQuestion = List.filled(4, -1);
       for (int i = 0; i < 4; i++) {
         newQuestion[i] = int.parse(gameController.currentQuestion[i]);
       }
       currentQuestion = newQuestion;
+    } else if (gameController.isHost) {
+      // Multi-player mode, host player
+      (gameController as HostGameController).startRound();
+    } else {
+      // Multi-player mode, normal player
+      gameController.attachMainGameListeners(_onStartRound, _onGetCorrect,
+          _onTimeUp, _onEndGame);
     }
+  }
+
+  void _onStartRound(int round, String question) {
+    // TODO: simplify this
+    startNewRound();
+  }
+
+  void _onGetCorrect(String name, int score, String correctAnswer) {
+    setState(() {
+      status = name + " got it correct with " + correctAnswer;
+    });
+  }
+
+  void _onTimeUp() {
+    setState(() {
+      status = "Oh no time's up!";
+    });
+  }
+
+  void _onEndGame() {
+    setState(() {
+      status = "Game ended!";
+    });
   }
 
   // Callback for when a new round starts

@@ -35,10 +35,73 @@ class HostGameController extends GameController {
     this.roundDuration = timerDuration;
   }
 
-  void createRoom() {
-    (networkController as HostNetworkController).createRoom(handleRoomCreation);
+  void createRoom(Function onCreate) {
+    // (networkController as HostNetworkController).createRoom(handleRoomCreation);
+    (networkController as HostNetworkController).createRoom(currPlayer.name, currPlayer.colour, onCreate);
   }
 
+  bool isEveryoneReady() {
+    return otherPlayers.fold(true, (previousValue, element) => previousValue && element.isReady);
+  }
+
+  void startGame() {
+    (networkController as HostNetworkController).startGame(pin);
+  }
+
+  void startRound() {
+    print("gonna start a new round!");
+
+    roundNumber++;
+    if (roundNumber > numberOfQuestions) {
+      print("ROUND ENDED!");
+      return;
+    }
+
+    String question = numberGenerator.generate();
+
+    (networkController as HostNetworkController).startRound(pin, roundNumber, question);
+  }
+
+  void indicateTimeUp() {
+    (networkController as HostNetworkController).indicateTimeUp(pin);
+  }
+
+  void endGame() {
+    (networkController as HostNetworkController).endGame(pin);
+  }
+
+  @override
+  void attachMainGameListeners(Function onStartRound, Function onGetCorrect,
+      Function onTimeUp, Function onEndGame) {
+    // TODO: remove duplication!
+    var onGetCorrectCallback = (String name, int score, String correctAnswer) {
+      if (currPlayer.name == name) {
+        currPlayer.score = score;
+      } else {
+        otherPlayers.forEach((player) {
+          if (player.name == name) {
+            player.score = score;
+          }
+        });
+      }
+
+      onGetCorrect(name, score, correctAnswer);
+
+      // NOTE: specific to host
+      Timer(Duration(milliseconds: 500), startRound);
+    };
+
+    var onStartRoundCallback = (int round, String question) {
+      // TODO: is round number useful here?
+      currentQuestion = question;
+      onStartRound();
+    };
+
+    networkController.attachMainGameListeners(onStartRoundCallback, onGetCorrectCallback,
+        onTimeUp, onEndGame);
+  }
+
+  /*
   void startGame() {
     int interval = (this.roundDuration / 3).floor();
     List<int> roundDurationIntervals = [interval, 2 * interval, 3 * interval];
@@ -48,6 +111,8 @@ class HostGameController extends GameController {
   void startRound() {
     (networkController as HostNetworkController).startRound(this.pin);
   }
+
+   */
 
   // For "Challenge Yourself" Mode
   void _startNextRound(Timer timer) {
@@ -83,6 +148,7 @@ class HostGameController extends GameController {
     timer = new Timer.periodic(Duration(seconds: this.roundDuration), _startNextRound);
   }
 
+  /*
   @override
   void handleGameStateChange(GameState gameState) {
     super.handleGameStateChange(gameState);
@@ -94,4 +160,6 @@ class HostGameController extends GameController {
   void handleRoundEnd() {
     (networkController as HostNetworkController).endRound(this.pin);
   }
+
+   */
 }
