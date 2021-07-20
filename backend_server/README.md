@@ -34,24 +34,20 @@ After everyting's ready, here are some quick commands to get started:
 ### WebSocket Schema
 | S/N | Functionality | What Client sends | Type of Client | What Server sends and To Whom |
 | --- | ------------- | ----------------- | -------------- | ----------------------------- |
-|  1  | To create a room |
-```
-{
-    "type": "CREATE_ROOM",
-    "body": {
-        "name": "Zechu",
-        "colour": "blue"
-    }
-}
-```
-| Host | 
-```
-{
-    "type": "CREATE_ROOM_REPLY",
-    "body": "2345"
-}
-```
-To Host |
+|  1  | To create a room |  `{`                          | Host |`{`                                 |
+|     |                  |  `    "type": "CREATE_ROOM",` |      |`     "type": "CREATE_ROOM_REPLY",` |
+|     |                  |  `    "body": {`              |      |`     "body": "2345"`               |
+|     |                  |  `        "name": "Zechu",`   |      |`}`                                 |
+|     |                  |  `        "colour": "blue"`   |      |                                    |
+|     |                  |  `    }`                      |      |                                    |
+|     |                  |  `}`                          |      |                                    |
+|  2  | To join a room   |  `{`                          | Host |`{`                                 |
+|     |                  |  `    "type": "CREATE_ROOM",` |      |`     "type": "CREATE_ROOM_REPLY",` |
+|     |                  |  `    "body": {`              |      |`     "body": "2345"`               |
+|     |                  |  `        "name": "Zechu",`   |      |`}`                                 |
+|     |                  |  `        "colour": "blue"`   |      |                                    |
+|     |                  |  `    }`                      |      |                                    |
+|     |                  |  `}`                          |      |                                    |
 
 2. To join a room:
 client:
