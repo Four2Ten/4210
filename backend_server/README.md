@@ -44,6 +44,7 @@ After everyting's ready, here are some quick commands to get started:
         <td> 1 </td> 
         <td> To create a room </td> 
         <td> 
+            <p>
             ```
             {
                 "type": "CREATE_ROOM",
@@ -53,9 +54,11 @@ After everyting's ready, here are some quick commands to get started:
                 }
             }
             ```
+            </p>
         </td> 
         <td> Host </td>
         <td> 
+            <p>
             ```
             {
                 "type": "CREATE_ROOM_REPLY",
@@ -63,12 +66,14 @@ After everyting's ready, here are some quick commands to get started:
             }
             ```
             Sent to Host.
+            </p>
         </td>
     </tr>
     <tr>
         <td> 2 </td> 
         <td> To join a room </td> 
         <td> 
+            <p> 
             ```
             {
                 "type": "JOIN_ROOM",
@@ -79,9 +84,11 @@ After everyting's ready, here are some quick commands to get started:
                 }
             }
             ```
+            </p>
         </td> 
         <td> Host </td>
         <td> 
+            <p>
             ```
             {
                 "type": "JOIN_ROOM_REPLY",
@@ -100,6 +107,7 @@ After everyting's ready, here are some quick commands to get started:
             }
             ```
             Relay to all if success.
+            </p>
         </td>
     </tr>
 </table>
