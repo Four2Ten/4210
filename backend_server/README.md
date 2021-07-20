@@ -32,22 +32,86 @@ After everyting's ready, here are some quick commands to get started:
 }
 
 ### WebSocket Schema
-| S/N | Functionality | What Client sends | Type of Client | What Server sends and To Whom |
-| --- | ------------- | ----------------- | -------------- | ----------------------------- |
-|  1  | To create a room |  `{`                          | Host |`{`                                 |
-|     |                  |  `    "type": "CREATE_ROOM",` |      |`     "type": "CREATE_ROOM_REPLY",` |
-|     |                  |  `    "body": {`              |      |`     "body": "2345"`               |
-|     |                  |  `        "name": "Zechu",`   |      |`}`                                 |
-|     |                  |  `        "colour": "blue"`   |      |                                    |
-|     |                  |  `    }`                      |      |                                    |
-|     |                  |  `}`                          |      |                                    |
-|  2  | To join a room   |  `{`                          | Host |`{`                                 |
-|     |                  |  `    "type": "CREATE_ROOM",` |      |`     "type": "CREATE_ROOM_REPLY",` |
-|     |                  |  `    "body": {`              |      |`     "body": "2345"`               |
-|     |                  |  `        "name": "Zechu",`   |      |`}`                                 |
-|     |                  |  `        "colour": "blue"`   |      |                                    |
-|     |                  |  `    }`                      |      |                                    |
-|     |                  |  `}`                          |      |                                    |
+<table>
+    <tr>
+        <td> S/N </td> 
+        <td> Functionality </td> 
+        <td> What Client sends </td> 
+        <td> Type of Client </td>
+        <td> What Server sends and To Whom </td>
+    </tr>
+    <tr>
+        <td> 1 </td> 
+        <td> To create a room </td> 
+        <td> 
+
+            ```
+            {
+                "type": "CREATE_ROOM",
+                "body": {
+                    "name": "John",
+                    "colour": "Colour.pink"
+                }
+            }
+            ```
+
+        </td> 
+        <td> Host </td>
+        <td> 
+
+            ```
+            {
+                "type": "CREATE_ROOM_REPLY",
+                "body": "2345"
+            }
+            ```
+            Sent to Host.
+
+        </td>
+    </tr>
+    <tr>
+        <td> 2 </td> 
+        <td> To join a room </td> 
+        <td> 
+
+            ```
+            {
+                "type": "JOIN_ROOM",
+                "body": {
+                    "room": "2345",
+                    "name": "John",
+                    "colour": "Colour.blue"
+                }
+            }
+            ```
+
+        </td> 
+        <td> Host </td>
+        <td> 
+
+            ```
+            {
+                "type": "JOIN_ROOM_REPLY",
+                "body": {
+                    "message": "sucess|no such room|cannot join now",
+                    "player":[
+                        {
+                            "name": "John",
+                            "colour": "Colour.blue"
+                        },
+                        {
+                            ...
+                        }
+                    ],
+                }
+            }
+            ```
+            Relay to all if success.
+
+        </td>
+    </tr>
+</table>
+
 
 2. To join a room:
 client:
