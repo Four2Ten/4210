@@ -4,6 +4,7 @@ import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/Utils/Instructions.dart';
 import 'package:four_2_ten/View/CustomElevatedButton.dart';
 import 'package:four_2_ten/View/FallingImage.dart';
+import 'package:four_2_ten/View/JoinRoomScreen.dart';
 import 'package:four_2_ten/View/RoomSettings.dart';
 import "dart:math";
 
@@ -116,11 +117,17 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void onJoinRoom() {
-    // TODO: implement
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => JoinRoomScreen()),
+    );
   }
 
   void onChallengeYourself() {
-    // TODO: implement
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RoomSettings(isSoloMode: true)),
+    );
   }
 
   @override

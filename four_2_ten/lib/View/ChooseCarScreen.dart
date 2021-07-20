@@ -10,7 +10,7 @@ import 'package:four_2_ten/View/CustomElevatedButton.dart';
 import 'package:four_2_ten/View/WaitingRoom.dart';
 import 'package:global_configuration/global_configuration.dart';
 
-// For now, two players can choose the same colour.
+// For now, Two players can choose the same colour.
 // TODO: only can choose unique colours.
 class ChooseCarScreen extends StatefulWidget {
   final GameController gameController;
@@ -56,17 +56,26 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
   }
 
   void _onPressEnterGame() {
-    gameController.joinRoom(_name, _chosenColour);
+    gameController.currPlayer = Player("8888888", _name, _chosenColour); // TODO: 8888 is a placeholder
 
-    // TODO: the following assignments are placeholders for testing. need to delete later
-    gameController.pin = "2345";
-    gameController.currPlayer = Player("8888888", _name, _chosenColour);
-
-    //TODO: only navigate when joined successfully in network
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => WaitingRoom(gameController)),
-    );
+    if (gameController.isHost) {
+      Function onCreateCallback = (roomNumber) {
+        gameController.pin = roomNumber;
+        print("ROOM NUMBER IS " + roomNumber);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => WaitingRoom(gameController)),
+        );
+      };
+      (gameController as HostGameController).createRoom(onCreateCallback);
+    } else {
+      gameController.joinRoom(() {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => WaitingRoom(gameController)),
+        );
+      });
+    }
   }
 
   void _onTextFieldChange(String value) {

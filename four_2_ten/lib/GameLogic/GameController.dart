@@ -1,10 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:four_2_ten/Error/JoinGameError.dart';
 import 'package:four_2_ten/GameLogic/GameState.dart';
-import 'package:four_2_ten/GameLogic/NumberGenerator.dart';
-import 'package:four_2_ten/Model/Colour.dart';
 import 'package:four_2_ten/Model/Player.dart';
-import 'package:four_2_ten/Network/HostNetworkController.dart';
 import 'package:four_2_ten/Network/NetworkController.dart';
 import 'dart:io';
 
@@ -15,24 +12,110 @@ class GameController {
   bool isHost = false; //default
 
   // platform specific channels (mainly for firebase id)
-  static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
+  // static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // game information
   List<Player> otherPlayers = new List<Player>();
   Player currPlayer;
-  String id; // user id
-  GameState gameState;
+  // String id; // user id
+  // GameState gameState;
   String pin; // room pin
-  List<int> roundDurationIntervals;
+  // List<int> roundDurationIntervals;
+  String currentQuestion;
 
   // network controller
   NetworkController networkController;
-  // number generator used to generate questions
-  NumberGenerator numberGenerator = new NumberGenerator();
+
+  // Callback to update UI
+  Function uiCallback;
 
   GameController() {
     networkController = NetworkController();
   }
 
+  void attachJoinListener(Function onJoin) {
+    // TODO: remove duplication
+    var onJoinCallback = (List<Player> players) {
+      otherPlayers = players.where((element) => element.name != currPlayer.name).toList();
+      onJoin();
+    };
+
+    networkController.attachJoinListener(onJoinCallback);
+  }
+
+  void joinRoom(Function onJoin) {
+    var onJoinCallback = (List<Player> players) {
+      otherPlayers = players.where((element) => element.name != currPlayer.name).toList();
+      onJoin();
+    };
+
+    networkController.joinRoom(pin, currPlayer.name, currPlayer.colour, onJoinCallback);
+  }
+
+  void attachReadyListener(Function onReceiveReady) {
+    var networkCallback = (String name) {
+      if (name == currPlayer.name) {
+        currPlayer.isReady = true;
+      } else {
+        otherPlayers.forEach((player) {
+          if (player.name == name) {
+            player.isReady = true;
+          }
+        });
+      }
+      onReceiveReady();
+    };
+
+    networkController.attachReadyListener(networkCallback);
+  }
+
+  void indicateReady() {
+    networkController.indicateReady(pin, currPlayer.name);
+  }
+
+  void indicatePass() {
+    networkController.indicatePass(pin, currPlayer.name);
+  }
+
+  void attachGameStartListener(Function onStartGame) {
+    networkController.attachGameStartListener(onStartGame);
+  }
+
+  void attachMainGameListeners(Function onStartRound, Function onGetCorrect,
+      Function onTimeUp, Function onEndGame) {
+    var onGetCorrectCallback = (String name, int score, String correctAnswer) {
+      if (currPlayer.name == name) {
+        currPlayer.score = score;
+      } else {
+        otherPlayers.forEach((player) {
+          if (player.name == name) {
+            player.score = score;
+          }
+        });
+      }
+
+      onGetCorrect(name, score, correctAnswer);
+    };
+
+    var onStartRoundCallback = (int round, String question) {
+      currentQuestion = question;
+      onStartRound(round);
+    };
+
+    networkController.attachMainGameListeners(onStartRoundCallback, onGetCorrectCallback,
+        onTimeUp, onEndGame);
+  }
+
+  void getCorrect(String correctAnswer) {
+    currPlayer.score++;
+    networkController.getCorrect(pin, currPlayer.name, currPlayer.score, correctAnswer);
+  }
+
+  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
+  bool checkAnswer(String userExpression, String questionString) {
+    return AnswerChecker.check(userExpression, questionString);
+  }
+
+  /*
   Future<String> _getId() async {
     try {
       if (Platform.isAndroid) {
@@ -109,9 +192,5 @@ class GameController {
   void startRound() {
     (networkController as HostNetworkController).startRound(this.pin);
   }
-
-  // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
-  bool checkAnswer(String userExpression, String questionString) {
-    return AnswerChecker.check(userExpression, questionString);
-  }
+   */
 }

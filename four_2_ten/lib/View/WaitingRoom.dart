@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:four_2_ten/GameLogic/GameController.dart';
+import 'package:four_2_ten/GameLogic/HostGameController.dart';
 import 'package:four_2_ten/Model/Colour.dart';
 import 'package:four_2_ten/Model/Player.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
@@ -25,11 +26,39 @@ class _WaitingRoomState extends State<WaitingRoom> {
     this.gameController = gameController;
     players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
     smallFontSize = GlobalConfiguration().getValue("smallFontSize");
+
+    this.gameController.attachJoinListener(onJoin);
+    this.gameController.attachReadyListener(onReceiveReady);
+    this.gameController.attachGameStartListener(onStartGame);
+  }
+
+  //Note: listen for other players joining
+  void onJoin() {
+    // TODO: remove duplication cuz same as below
+    setState(() {
+      players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
+    });
+  }
+
+  void onReceiveReady() {
+    setState(() {
+      players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
+    });
+  }
+
+  void onStartGame() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => MainGameScreen(gameController)),
+    );
   }
 
   Widget _getPlayerIcon(Player player, double width) {
     Colour colour = player != null ? player.colour : Colour.lightBlue; // TODO: change this to a placeholder
     String name = player != null ? player.name : '---'; // TODO: change this to a placeholder
+    bool isPlayerReady = player != null && player.isReady; // TODO: change this to a placeholder
+    print("========");
+    print("colour is " + colour.toString());
     String source = Commons.colourToAssetString(colour);
 
     return Column(
@@ -41,7 +70,7 @@ class _WaitingRoomState extends State<WaitingRoom> {
         Text(
           name,
           style: TextStyle(
-            color: Colors.grey,
+            color: isPlayerReady ? Colors.red : Colors.grey,
             fontFamily: "WalterTurncoat",
             fontSize: smallFontSize,
           ),
@@ -88,13 +117,17 @@ class _WaitingRoomState extends State<WaitingRoom> {
   }
 
   void _onPressStart() {
-    //TODO: implement
-
-    //TODO: only navigate when joined successfully in network
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => MainGameScreen(gameController)),
-    );
+    if (gameController.isHost) {
+      // if host, the "START ENGINE" button functions as a start game button
+      if ((gameController as HostGameController).isEveryoneReady()) {
+        (gameController as HostGameController).startGame();
+      } else {
+        print("NOT EVERYONE IS READY YET!"); // TODO: implement UI
+      }
+    } else {
+      // if not host, the "START ENGINE" button functions as a "I'm ready" button
+      gameController.indicateReady();
+    }
   }
 
   Widget _getStartButton(double width) {

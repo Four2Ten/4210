@@ -1,11 +1,72 @@
+import 'dart:convert';
+
 import 'package:firebase_database/firebase_database.dart';
-import 'package:four_2_ten/GameLogic/GameState.dart';
+import 'package:four_2_ten/Model/Colour.dart';
 
 import 'NetworkController.dart';
-import 'dart:math';
 
 class HostNetworkController extends NetworkController {
 
+  void createRoom(String name, Colour colour, Function onCreate) {
+    var request = {
+      "type": "CREATE_ROOM",
+      "body": {
+        "name": name,
+        "colour": colour.toString()
+      }
+    };
+    // assign listener
+    super.onCreate = onCreate;
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void startGame(String roomNumber) {
+    var request = {
+      "type": "START_GAME",
+      "body": {
+        "room": roomNumber
+      }
+    };
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void startRound(String roomNumber, int round, String question) {
+    var request = {
+      'type': 'START_ROUND',
+      'body': {
+        'room': roomNumber,
+        'round': round,
+        'question': question
+      }
+    };
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void indicateTimeUp(String roomNumber) {
+    var request = {
+      'type': 'TIME_UP',
+      'body': {
+        'room': roomNumber
+      }
+    };
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void endGame(String roomNumber) {
+    var request = {
+      'type': 'END_GAME',
+      'body': {
+        'room': roomNumber
+      }
+    };
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void attachOnPassListener(Function onPass) {
+    super.onPass = onPass;
+  }
+
+/*
   final _random = new Random();
 
   String _generateNewPin(List<String> existingRoomPins) {
@@ -45,4 +106,7 @@ class HostNetworkController extends NetworkController {
     ref.child(roomLabel + "/" + pin + "/" + gameStateLabel)
         .set(GameState.roundStart);
   }
+
+ */
+
 }

@@ -8,9 +8,13 @@ class AnswerChecker {
       return false;
     }
 
-    var finalValue = _evaluate(userExpression);
-
-    return (finalValue - 10.0).abs() < 0.0000001; // prevent floating point rounding error
+    try {
+      var finalValue = _evaluate(userExpression);
+      return (finalValue - 10.0).abs() < 0.0000001; // prevent floating point rounding error
+    } catch (e) {
+      print("An error in AnswerChecker occurred: " + e.toString());
+      return false;
+    }
   }
 
   static bool _areAllDigitsUsed(String userExpression, String questionString) {
@@ -115,7 +119,7 @@ class AnswerChecker {
   static int _getPrecedence(operation) {
     if (operation == "+" || operation == "-") {
       return 1;
-    } else if (operation == "*" || operation == "/") {
+    } else if (operation == "×" || operation == "÷") {
       return 2;
     } else {
       return 0;
@@ -127,9 +131,9 @@ class AnswerChecker {
       return (val1 + val2).toDouble();
     } else if (operator == "-") {
       return (val1 - val2).toDouble();
-    } else if (operator == "*") {
+    } else if (operator == "×") {
       return (val1 * val2).toDouble();
-    } else if (operator == "/") {
+    } else if (operator == "÷") {
       return val1 / val2;
     } else {
       throw new FormatException("Invalid operator!");
