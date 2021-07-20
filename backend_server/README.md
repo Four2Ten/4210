@@ -1,14 +1,14 @@
 # Backend Server for Four2Ten
 
 ## Introduction
-This backend server acts as the coordination point for the multi-player game, Four2Ten, by keeping information of currently active rooms and relaying information between clients in the same room via WebSocket. 
+This backend server acts as the coordination point for the multi-player game, Four2Ten, by keeping information of currently active rooms and relaying information between clients in the same room via WebSockets. 
 
-Specifically, each client (a player's mobile application) initiates a WebSocket connection with the server while specifying the room ID. The server will group together all the WebSocket clients within the same room, and process messages from each client according to the schema below.
+Specifically, each client (a player's mobile application) initiates a WebSocket connection with the server by specifying the room ID. The server will group together all the WebSocket clients within the same room, and process messages from each client according to the schema below.
 
-The server is written in `Node.js` and is hosted on [Google App Engine](https://cloud.google.com/appengine).
+The server is written in `Node.js` and is hosted on [Google App Engine](https://cloud.google.com/appengine). All server code can be found in `server.js`.
 
 ## Quick Start
-You may refer to this [quickstart guide from Google](https://cloud.google.com/appengine/docs/standard/nodejs/quickstart) on how to deploy `Node.js` to Google App Engine. Note that you need to initialise the Google Cloud SDK first, as described in the guide.
+You may refer to this [quickstart guide from Google](https://cloud.google.com/appengine/docs/standard/nodejs/quickstart) on how to deploy `Node.js` to Google App Engine. Note that you'll need to initialise the Google Cloud SDK first, as described in the guide.
 
 After everyting's ready, here are some quick commands to get started:
 - Install dependencies for the project: `npm install`
@@ -20,6 +20,7 @@ After everyting's ready, here are some quick commands to get started:
 ### Global variables
 - Set of strings of room IDs
 - Hashmap:
+```
 {
     roomNumber: {
         clients: [array of WebSockets],
@@ -30,6 +31,7 @@ After everyting's ready, here are some quick commands to get started:
         canJoin: true
     }
 }
+```
 
 ### WebSocket Schema
 <table>
@@ -64,7 +66,7 @@ After everyting's ready, here are some quick commands to get started:
     "body": "2345"
 }
 
-Sent to Host.
+Send to Host.
 </pre>
 </td>
 </tr>
