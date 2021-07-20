@@ -1,26 +1,41 @@
-redis:
-set of room IDs
-(use node.js for now!)
+# Backend Server for Four2Ten
 
-=============
-Node.js global vars:
-- set of room strings
-- hashmap:
+## Introduction
+This backend server acts as the coordination point for the multi-player game, Four2Ten, by keeping information of currently active rooms and relaying information between clients in the same room via WebSocket. 
+
+Specifically, each client (a player's mobile application) initiates a WebSocket connection with the server while specifying the room ID. The server will group together all the WebSocket clients within the same room, and process messages from each client according to the schema below.
+
+The server is written in `Node.js` and is hosted on [Google App Engine](https://cloud.google.com/appengine).
+
+## Quick Start
+You may refer to this [quickstart guide from Google](https://cloud.google.com/appengine/docs/standard/nodejs/quickstart) on how to deploy `Node.js` to Google App Engine. Note that you need to initialise the Google Cloud SDK first, as described in the guide.
+
+After everyting's ready, here are some quick commands to get started:
+- Install dependencies for the project: `npm install`
+- Start the server locally: `npm start`
+- Deploy to Google App Engine: `gcloud app deploy`
+
+## Schema
+
+### Global variables
+- Set of strings of room IDs
+- Hashmap:
 {
     roomNumber: {
-        clients: [websockets],
+        clients: [array of WebSockets],
         players: [{
-            name: "Zechu",
-            colour: "blue"
-        }],
+            name: "John",
+            colour: "Colour.pink"
+        }, ...],
         canJoin: true
     }
 }
 
-websocket:
-JSON:
-1. To create a room
-client:
+### WebSocket Schema
+| S/N | Functionality | What Client sends | Type of Client | What Server sends and To Whom |
+| --- | ------------- | ----------------- | -------------- | ----------------------------- |
+|  1  | To create a room |
+```
 {
     "type": "CREATE_ROOM",
     "body": {
@@ -28,11 +43,16 @@ client:
         "colour": "blue"
     }
 }
-server:
+```
+| Host | 
+```
 {
     "type": "CREATE_ROOM_REPLY",
     "body": "2345"
 }
+```
+To Host |
+
 2. To join a room:
 client:
 {
