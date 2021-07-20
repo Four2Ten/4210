@@ -33,96 +33,68 @@ After everyting's ready, here are some quick commands to get started:
 
 ### WebSocket Schema
 <table>
-    <tr>
-        <td> S/N </td> 
-        <td> Functionality </td> 
-        <td> What Client sends </td> 
-        <td> Type of Client </td>
-        <td> What Server sends and To Whom </td>
-    </tr>
-    <tr>
-        <td> 1 </td> 
-        <td> To create a room </td> 
-        <td> 
-            <pre>
-            {
-                "type": "CREATE_ROOM",
-                "body": {
-                    "name": "John",
-                    "colour": "Colour.pink"
-                }
-            }
-            </pre>
-        </td> 
-        <td> Host </td>
-        <td> 
-            <pre>
-            {
-                "type": "CREATE_ROOM_REPLY",
-                "body": "2345"
-            }
-            Sent to Host.
-            </pre>
-        </td>
-    </tr>
-    <tr>
-        <td> 2 </td> 
-        <td> To join a room </td> 
-        <td> 
-            <pre> 
-            {
-                "type": "JOIN_ROOM",
-                "body": {
-                    "room": "2345",
-                    "name": "John",
-                    "colour": "Colour.blue"
-                }
-            }
-            </pre>
-        </td> 
-        <td> Host </td>
-        <td> 
-            <pre>
-            {
-                "type": "JOIN_ROOM_REPLY",
-                "body": {
-                    "message": "sucess|no such room|cannot join now",
-                    "player":[
-                        {
-                            "name": "John",
-                            "colour": "Colour.blue"
-                        },
-                        {
-                            ...
-                        }
-                    ],
-                }
-            }
-            Relay to all if success.
-            </pre>
-        </td>
-    </tr>
-</table>
 
-2. To join a room:
-client:
+<tr>
+<td> S/N </td> 
+<td> Functionality </td> 
+<td> What Client sends </td> 
+<td> Type of Client </td>
+<td> What Server sends and To Whom </td>
+</tr>
+
+<tr>
+<td> 1 </td> 
+<td> To create a room </td> 
+<td> 
+<pre>
+{
+    "type": "CREATE_ROOM",
+    "body": {
+        "name": "John",
+        "colour": "Colour.pink"
+    }
+}
+</pre>
+</td> 
+<td> Host </td>
+<td> 
+<pre>
+{
+    "type": "CREATE_ROOM_REPLY",
+    "body": "2345"
+}
+
+Sent to Host.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 2 </td> 
+<td> To join a room </td> 
+<td> 
+<pre> 
 {
     "type": "JOIN_ROOM",
     "body": {
         "room": "2345",
-        "name": "Zechu",
-        "colour": "blue"
+        "name": "John",
+        "colour": "Colour.blue"
     }
 }
-server (relay to all if success):
+</pre>
+</td> 
+<td> Non-host </td>
+<td> 
+<pre>
 {
     "type": "JOIN_ROOM_REPLY",
     "body": {
         "message": "sucess|no such room|cannot join now",
         "player":[
             {
-                "name": "Zechu",
-                "colour": "blue"
+                "name": "John",
+                "colour": "Colour.blue"
             },
             {
                 ...
@@ -130,84 +102,164 @@ server (relay to all if success):
         ],
     }
 }
-3. Indicate ready
-client:
+
+Reply to all if success.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 3 </td> 
+<td> To indicate a player is ready </td> 
+<td> 
+<pre> 
 {
     "type": "INDICATE_READY",
     "body": {
         "room": "2345",
-        "name": "Zechu"
+        "name": "John"
     }
 }
-server: relay to all
-4. Start game
-client (host):
+</pre>
+</td> 
+<td> Non-host </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 4 </td> 
+<td> To start a game </td> 
+<td> 
+<pre> 
 {
     "type": "START_GAME",
     "body": {
         "room": "2345"
     }
 }
-server:
-relay to all
-5. Start round
-client (host):
+</pre>
+</td> 
+<td> Host </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 5 </td> 
+<td> To start a new round </td> 
+<td> 
+<pre> 
 {
     "type": "START_ROUND",
     "body": {
         "room": "2345",
         "round": 15,
-        "question": "2345"
+        "question": "7385"
     }
 }
-server: 
-relay to all
-6. Someone got it correct:
-client (the one who got it correct):
+</pre>
+</td> 
+<td> Host </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 6 </td> 
+<td> To inform others that a player gets a question correct </td> 
+<td> 
+<pre> 
 {
     "type": "GET_CORRECT",
     "body": {
         "room": "2345",
-        "name": "Zechu",
+        "name": "John",
         "score": 12,
         "correctAnswer": "1+1+9+0"
     }
 }
-server:
-relay to all
-7. Someone passes
-client (the one who passes):
+</pre>
+</td> 
+<td> Any player (the player who gets the question correct) </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 7 </td> 
+<td> To inform others that a player wants to pass the current round </td> 
+<td> 
+<pre> 
 {
     "type": "PASS",
     "body": {
         "room": "1234",
-        "name": "Zechu"
+        "name": "John"
     }
 }
-server:
-relay to all
-8. Timer's up
-client (host):
+</pre>
+</td> 
+<td> Any player (the player who wants to pass) </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 8 </td> 
+<td> To inform everyone that time is up for the current round </td> 
+<td> 
+<pre> 
 {
     "type": "TIME_UP",
     "body": {
         "room": "2345"
     }
 }
-server:
-relay to all
-9. End game:
-client (host):
+</pre>
+</td> 
+<td> Host </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
+
+<tr>
+<td> 9 </td> 
+<td> To end a game </td> 
+<td> 
+<pre> 
 {
     "type": "END_GAME",
     "body": {
         "room": "2345"
     }
 }
-server:
-relay to all
+</pre>
+</td> 
+<td> Host </td>
+<td> 
+<pre>
+Relay original message to all.
+</pre>
+</td>
+</tr>
 
-
-
-
-
+</table>
