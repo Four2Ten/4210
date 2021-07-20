@@ -1,0 +1,142 @@
+redis:
+set of room IDs
+(use node.js for now!)
+
+=============
+Node.js global vars:
+- set of room strings
+- hashmap:
+{
+    roomNumber: {
+        clients: [websockets],
+        players: [{
+            name: "Zechu",
+            colour: "blue"
+        }],
+        canJoin: true
+    }
+}
+
+websocket:
+JSON:
+1. To create a room
+client:
+{
+    "type": "CREATE_ROOM",
+    "body": {
+        "name": "Zechu",
+        "colour": "blue"
+    }
+}
+server:
+{
+    "type": "CREATE_ROOM_REPLY",
+    "body": "2345"
+}
+2. To join a room:
+client:
+{
+    "type": "JOIN_ROOM",
+    "body": {
+        "room": "2345",
+        "name": "Zechu",
+        "colour": "blue"
+    }
+}
+server (relay to all if success):
+{
+    "type": "JOIN_ROOM_REPLY",
+    "body": {
+        "message": "sucess|no such room|cannot join now",
+        "player":[
+            {
+                "name": "Zechu",
+                "colour": "blue"
+            },
+            {
+                ...
+            }
+        ],
+    }
+}
+3. Indicate ready
+client:
+{
+    "type": "INDICATE_READY",
+    "body": {
+        "room": "2345",
+        "name": "Zechu"
+    }
+}
+server: relay to all
+4. Start game
+client (host):
+{
+    "type": "START_GAME",
+    "body": {
+        "room": "2345"
+    }
+}
+server:
+relay to all
+5. Start round
+client (host):
+{
+    "type": "START_ROUND",
+    "body": {
+        "room": "2345",
+        "round": 15,
+        "question": "2345"
+    }
+}
+server: 
+relay to all
+6. Someone got it correct:
+client (the one who got it correct):
+{
+    "type": "GET_CORRECT",
+    "body": {
+        "room": "2345",
+        "name": "Zechu",
+        "score": 12,
+        "correctAnswer": "1+1+9+0"
+    }
+}
+server:
+relay to all
+7. Someone passes
+client (the one who passes):
+{
+    "type": "PASS",
+    "body": {
+        "room": "1234",
+        "name": "Zechu"
+    }
+}
+server:
+relay to all
+8. Timer's up
+client (host):
+{
+    "type": "TIME_UP",
+    "body": {
+        "room": "2345"
+    }
+}
+server:
+relay to all
+9. End game:
+client (host):
+{
+    "type": "END_GAME",
+    "body": {
+        "room": "2345"
+    }
+}
+server:
+relay to all
+
+
+
+
+
