@@ -44,8 +44,7 @@ After everyting's ready, here are some quick commands to get started:
         <td> 1 </td> 
         <td> To create a room </td> 
         <td> 
-            <p>
-            ```
+            <pre>
             {
                 "type": "CREATE_ROOM",
                 "body": {
@@ -53,28 +52,24 @@ After everyting's ready, here are some quick commands to get started:
                     "colour": "Colour.pink"
                 }
             }
-            ```
-            </p>
+            </pre>
         </td> 
         <td> Host </td>
         <td> 
-            <p>
-            ```
+            <pre>
             {
                 "type": "CREATE_ROOM_REPLY",
                 "body": "2345"
             }
-            ```
             Sent to Host.
-            </p>
+            </pre>
         </td>
     </tr>
     <tr>
         <td> 2 </td> 
         <td> To join a room </td> 
         <td> 
-            <p> 
-            ```
+            <pre> 
             {
                 "type": "JOIN_ROOM",
                 "body": {
@@ -83,13 +78,11 @@ After everyting's ready, here are some quick commands to get started:
                     "colour": "Colour.blue"
                 }
             }
-            ```
-            </p>
+            </pre>
         </td> 
         <td> Host </td>
         <td> 
-            <p>
-            ```
+            <pre>
             {
                 "type": "JOIN_ROOM_REPLY",
                 "body": {
@@ -105,9 +98,8 @@ After everyting's ready, here are some quick commands to get started:
                     ],
                 }
             }
-            ```
             Relay to all if success.
-            </p>
+            </pre>
         </td>
     </tr>
 </table>
