@@ -38,7 +38,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
     }
   }
 
-  // TODO: implement this properly
+  // TODO: implement this UI properly
   Widget _getInput() {
     return Text(
       _getCurrentString(),
@@ -52,12 +52,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   }
 
   void _onPressButton() {
-    // TODO: implement this properly
     GameController gameController = new GameController();
-
     gameController.pin = currentDigits.map((e) => e.toString()).join("");
 
-    //TODO: only navigate when network responds success
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),

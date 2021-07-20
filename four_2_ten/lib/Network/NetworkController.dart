@@ -31,6 +31,7 @@ class NetworkController {
   Function onStartGame;
   Function onStartRound;
   Function onGetCorrect;
+  Function onPass = () {}; // default
   Function onTimeUp;
   Function onEndGame;
 
@@ -81,7 +82,7 @@ class NetworkController {
           onGetCorrect(correctPlayerName, score, correctAnswer);
           break;
         case 'PASS':
-          // TODO: implement!
+          onPass();
           break;
         case 'TIME_UP':
           onTimeUp();
@@ -120,6 +121,17 @@ class NetworkController {
   void indicateReady(String roomNumber, String name) {
     var request = {
       'type': 'INDICATE_READY',
+      'body': {
+        'room': roomNumber,
+        'name': name
+      }
+    };
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void indicatePass(String roomNumber, String name) {
+    var request = {
+      'type': 'PASS',
       'body': {
         'room': roomNumber,
         'name': name

@@ -72,6 +72,10 @@ class GameController {
     networkController.indicateReady(pin, currPlayer.name);
   }
 
+  void indicatePass() {
+    networkController.indicatePass(pin, currPlayer.name);
+  }
+
   void attachGameStartListener(Function onStartGame) {
     networkController.attachGameStartListener(onStartGame);
   }

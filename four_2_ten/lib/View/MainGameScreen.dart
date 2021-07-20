@@ -37,6 +37,7 @@ class _MainGameScreenState extends State<MainGameScreen> {
       // Multi-player mode, host player
       (gameController as HostGameController).attachMainGameListeners(onStartNewRound,
           _onGetCorrect, _onTimeUp, _onEndGame);
+      (gameController as HostGameController).attachPassCallback();
       (gameController as HostGameController).startRound();
     } else {
       // Multi-player mode, normal player
@@ -106,10 +107,9 @@ class _MainGameScreenState extends State<MainGameScreen> {
 
   // Callback function for the "PASS!" button in keyboard
   void _onPressPass() {
-    // TODO: implement; remove duplication
-    print("pressed PASS");
-
     if (gameController.isHost && (gameController as HostGameController).isSolo) {
+      // Solo Mode
+      // TODO: remove duplication
       (gameController as HostGameController).startRound();
       List<int> newQuestion = List.filled(4, -1);
       for (int i = 0; i < 4; i++) {
@@ -119,6 +119,9 @@ class _MainGameScreenState extends State<MainGameScreen> {
         currentQuestion = newQuestion;
         status = "Round " + (gameController as HostGameController).roundNumber.toString();
       });
+    } else {
+      // Multi-player Mode
+      gameController.indicatePass();
     }
   }
 

@@ -12,6 +12,7 @@ class HostGameController extends GameController {
   int numberOfQuestions;
   int roundDuration;
   int roundNumber = 0;
+  int numberOfPasses = 0;
 
   // For generating questions
   NumberGenerator numberGenerator = new NumberGenerator();
@@ -54,6 +55,11 @@ class HostGameController extends GameController {
   void attachMainGameListeners(Function onStartRound, Function onGetCorrect,
       Function onTimeUp, Function onEndGame) {
     // TODO: remove duplication!
+    var onStartRoundCallback = (int round, String question) {
+      currentQuestion = question;
+      onStartRound(round);
+    };
+
     var onGetCorrectCallback = (String name, int score, String correctAnswer) {
       if (currPlayer.name == name) {
         currPlayer.score = score;
@@ -64,20 +70,27 @@ class HostGameController extends GameController {
           }
         });
       }
-
       onGetCorrect(name, score, correctAnswer);
-
       // NOTE: specific to host
       Timer(Duration(milliseconds: 1200), startRound);
     };
 
-    var onStartRoundCallback = (int round, String question) {
-      currentQuestion = question;
-      onStartRound(round);
-    };
-
     networkController.attachMainGameListeners(onStartRoundCallback, onGetCorrectCallback,
         onTimeUp, onEndGame);
+  }
+
+  void attachPassCallback() {
+    var onPassCallback = () {
+      numberOfPasses++;
+      int numberOfPlayers = otherPlayers.length + 1;
+      print("number of passes is " + numberOfPasses.toString());
+      print("number of players is " + numberOfPlayers.toString());
+      if (numberOfPasses == numberOfPlayers) {
+        startRound();
+        numberOfPasses = 0;
+      }
+    };
+    (networkController as HostNetworkController).attachOnPassListener(onPassCallback);
   }
 
   void startRound() {

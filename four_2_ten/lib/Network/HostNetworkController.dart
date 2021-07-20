@@ -62,6 +62,10 @@ class HostNetworkController extends NetworkController {
     channel.sink.add(jsonEncode(request));
   }
 
+  void attachOnPassListener(Function onPass) {
+    super.onPass = onPass;
+  }
+
 /*
   final _random = new Random();
 

@@ -8,9 +8,13 @@ class AnswerChecker {
       return false;
     }
 
-    var finalValue = _evaluate(userExpression);
-
-    return (finalValue - 10.0).abs() < 0.0000001; // prevent floating point rounding error
+    try {
+      var finalValue = _evaluate(userExpression);
+      return (finalValue - 10.0).abs() < 0.0000001; // prevent floating point rounding error
+    } catch (e) {
+      print("An error in AnswerChecker occurred: " + e.toString());
+      return false;
+    }
   }
 
   static bool _areAllDigitsUsed(String userExpression, String questionString) {
