@@ -2,32 +2,29 @@ import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:four_2_ten/Error/JoinGameError.dart';
-import 'package:four_2_ten/GameLogic/GameState.dart';
 import 'package:four_2_ten/Model/Colour.dart';
 import 'package:four_2_ten/Model/Player.dart';
 import 'package:four_2_ten/Utils/StringToEnum.dart';
 
 class NetworkController {
+  // final ref = FirebaseDatabase.instance.reference();
+  // String takenRoomPinsLabel = "takenRoomPins"; // for storing room ids
+  // String roomLabel = "rooms"; // for storing rooms and players
+  // String pinLabel = "pin";
+  // String playerLabel = "player";
+  // String gameStateLabel = "gameState";
+  // String intervalsLabel = "intervals";
 
-  // websocket
+  final int maximumNumberOfPlayers = 6;
+  // final maxNumberForPin = 9999;
+  // final minNumberForPin = 1000;
+
+  // Open a WebSocket to connect to backend server
   final channel = WebSocketChannel.connect(
     Uri.parse('wss://tracker-project-298913.as.r.appspot.com'),
   );
 
-  final ref = FirebaseDatabase.instance.reference();
-  String takenRoomPinsLabel = "takenRoomPins"; // for storing room ids
-  String roomLabel = "rooms"; // for storing rooms and players
-  String pinLabel = "pin";
-  String playerLabel = "player";
-  String gameStateLabel = "gameState";
-  String intervalsLabel = "intervals";
-
-  final int maximumNumberOfPlayers = 6;
-  final maxNumberForPin = 9999;
-  final minNumberForPin = 1000;
-
-  // function callbacks
+  // Function callbacks
   Function onJoin;
   Function onCreate;
   Function onReceiveReady;
@@ -83,6 +80,9 @@ class NetworkController {
           var correctAnswer = reply['body']['correctAnswer'];
           onGetCorrect(correctPlayerName, score, correctAnswer);
           break;
+        case 'PASS':
+          // TODO: implement!
+          break;
         case 'TIME_UP':
           onTimeUp();
           break;
@@ -107,6 +107,10 @@ class NetworkController {
       }
     };
     channel.sink.add(jsonEncode(request));
+  }
+
+  void attachJoinListener(Function onJoin) {
+    this.onJoin = onJoin;
   }
 
   void attachReadyListener(Function onReceiveReady) {

@@ -1,10 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:four_2_ten/Error/JoinGameError.dart';
 import 'package:four_2_ten/GameLogic/GameState.dart';
-import 'package:four_2_ten/GameLogic/NumberGenerator.dart';
-import 'package:four_2_ten/Model/Colour.dart';
 import 'package:four_2_ten/Model/Player.dart';
-import 'package:four_2_ten/Network/HostNetworkController.dart';
 import 'package:four_2_ten/Network/NetworkController.dart';
 import 'dart:io';
 
@@ -15,14 +12,14 @@ class GameController {
   bool isHost = false; //default
 
   // platform specific channels (mainly for firebase id)
-  static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
+  // static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // game information
   List<Player> otherPlayers = new List<Player>();
   Player currPlayer;
-  String id; // user id
-  GameState gameState;
+  // String id; // user id
+  // GameState gameState;
   String pin; // room pin
-  List<int> roundDurationIntervals;
+  // List<int> roundDurationIntervals;
   String currentQuestion;
 
   // network controller
@@ -35,29 +32,23 @@ class GameController {
     networkController = NetworkController();
   }
 
-  Future<String> _getId() async {
-    try {
-      if (Platform.isAndroid) {
-        String id = await android_id_channel.invokeMethod('getId');
-        return id;
-      } else if (Platform.isIOS) {
-        // TODO: implement ios method
-        return "";
-      } else {
-        return null;
-      }
-    } on PlatformException catch (e) {
-      return null;
-    }
-  }
-
-  void joinRoom(Function onJoin) {
-    var networkCallback = (List<Player> players) {
+  void attachJoinListener(Function onJoin) {
+    // TODO: remove duplication
+    var onJoinCallback = (List<Player> players) {
       otherPlayers = players.where((element) => element.name != currPlayer.name).toList();
       onJoin();
     };
 
-    networkController.joinRoom(pin, currPlayer.name, currPlayer.colour, networkCallback);
+    networkController.attachJoinListener(onJoinCallback);
+  }
+
+  void joinRoom(Function onJoin) {
+    var onJoinCallback = (List<Player> players) {
+      otherPlayers = players.where((element) => element.name != currPlayer.name).toList();
+      onJoin();
+    };
+
+    networkController.joinRoom(pin, currPlayer.name, currPlayer.colour, onJoinCallback);
   }
 
   void attachReadyListener(Function onReceiveReady) {
@@ -71,7 +62,6 @@ class GameController {
           }
         });
       }
-
       onReceiveReady();
     };
 
@@ -103,17 +93,17 @@ class GameController {
     };
 
     var onStartRoundCallback = (int round, String question) {
-      // TODO: is round number useful here?
       currentQuestion = question;
-      onStartRound();
+      onStartRound(round);
     };
 
     networkController.attachMainGameListeners(onStartRoundCallback, onGetCorrectCallback,
         onTimeUp, onEndGame);
   }
 
-  void getCorrect(String roomNumber, String name, int score, String correctAnswer) {
-    networkController.getCorrect(roomNumber, name, score, correctAnswer);
+  void getCorrect(String correctAnswer) {
+    currPlayer.score++;
+    networkController.getCorrect(pin, currPlayer.name, currPlayer.score, correctAnswer);
   }
 
   // `userExpression` format: "2+3+4+1"; `questionString` format: "1234"
@@ -122,6 +112,22 @@ class GameController {
   }
 
   /*
+  Future<String> _getId() async {
+    try {
+      if (Platform.isAndroid) {
+        String id = await android_id_channel.invokeMethod('getId');
+        return id;
+      } else if (Platform.isIOS) {
+        // TODO: implement ios method
+        return "";
+      } else {
+        return null;
+      }
+    } on PlatformException catch (e) {
+      return null;
+    }
+  }
+
   // note: removed `pin` from arguments as it can be obtained from class property
   void joinRoom(String name, Colour colour) async {
     if (this.id == null) {

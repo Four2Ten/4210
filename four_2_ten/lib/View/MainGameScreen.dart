@@ -17,16 +17,17 @@ class _MainGameScreenState extends State<MainGameScreen> {
   GameController gameController;
   List<int> currentQuestion;
 
-  // temp
+  // TODO: this is the temporary status text on MainGameScreen. 
+  // It will eventually be replaced by nicer UI
   String status = "Round 1";
 
   _MainGameScreenState(GameController gameController) {
     this.gameController = gameController;
-    this.gameController.uiCallback = startNewRound;
+    this.gameController.uiCallback = onStartNewRound;
 
     if (gameController.isHost && (gameController as HostGameController).isSolo) {
       // Solo Mode
-      (gameController as HostGameController).startSoloRound();
+      (gameController as HostGameController).startRound();
       List<int> newQuestion = List.filled(4, -1);
       for (int i = 0; i < 4; i++) {
         newQuestion[i] = int.parse(gameController.currentQuestion[i]);
@@ -34,17 +35,14 @@ class _MainGameScreenState extends State<MainGameScreen> {
       currentQuestion = newQuestion;
     } else if (gameController.isHost) {
       // Multi-player mode, host player
+      (gameController as HostGameController).attachMainGameListeners(onStartNewRound,
+          _onGetCorrect, _onTimeUp, _onEndGame);
       (gameController as HostGameController).startRound();
     } else {
       // Multi-player mode, normal player
-      gameController.attachMainGameListeners(_onStartRound, _onGetCorrect,
+      gameController.attachMainGameListeners(onStartNewRound, _onGetCorrect,
           _onTimeUp, _onEndGame);
     }
-  }
-
-  void _onStartRound(int round, String question) {
-    // TODO: simplify this
-    startNewRound();
   }
 
   void _onGetCorrect(String name, int score, String correctAnswer) {
@@ -65,8 +63,8 @@ class _MainGameScreenState extends State<MainGameScreen> {
     });
   }
 
-  // Callback for when a new round starts
-  void startNewRound() {
+  // Callback when a new round starts
+  void onStartNewRound(int round) {
     List<int> newQuestion = List.filled(4, -1);
     for (int i = 0; i < 4; i++) {
       newQuestion[i] = int.parse(gameController.currentQuestion[i]);
@@ -74,7 +72,7 @@ class _MainGameScreenState extends State<MainGameScreen> {
 
     setState(() {
       currentQuestion = newQuestion;
-      status = "Round " + (gameController as HostGameController).roundNumber.toString();
+      status = "Round " + round.toString();
     });
   }
 
@@ -85,7 +83,8 @@ class _MainGameScreenState extends State<MainGameScreen> {
     if (isCorrect) {
       print("Correct!!");
       if (gameController.isHost && (gameController as HostGameController).isSolo) {
-        (gameController as HostGameController).startSoloRound();
+        // SOLO MODE
+        (gameController as HostGameController).startRound();
         List<int> newQuestion = List.filled(4, -1);
         for (int i = 0; i < 4; i++) {
           newQuestion[i] = int.parse(gameController.currentQuestion[i]);
@@ -94,6 +93,9 @@ class _MainGameScreenState extends State<MainGameScreen> {
           currentQuestion = newQuestion;
           status = "Round " + (gameController as HostGameController).roundNumber.toString();
         });
+      } else {
+        // Multi Player MODE
+        gameController.getCorrect(answer);
       }
     } else {
       setState(() {
@@ -108,7 +110,7 @@ class _MainGameScreenState extends State<MainGameScreen> {
     print("pressed PASS");
 
     if (gameController.isHost && (gameController as HostGameController).isSolo) {
-      (gameController as HostGameController).startSoloRound();
+      (gameController as HostGameController).startRound();
       List<int> newQuestion = List.filled(4, -1);
       for (int i = 0; i < 4; i++) {
         newQuestion[i] = int.parse(gameController.currentQuestion[i]);
@@ -157,7 +159,7 @@ class _MainGameScreenState extends State<MainGameScreen> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: spacing),
-              GameKeyboard(currentQuestion, _onPressGo, _onPressPass), // TODO: change hardcoding
+              GameKeyboard(currentQuestion, _onPressGo, _onPressPass),
             ]
           ),
         )

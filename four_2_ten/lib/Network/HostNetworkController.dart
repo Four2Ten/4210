@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:firebase_database/firebase_database.dart';
-import 'package:four_2_ten/GameLogic/GameState.dart';
 import 'package:four_2_ten/Model/Colour.dart';
 
 import 'NetworkController.dart';
-import 'dart:math';
 
 class HostNetworkController extends NetworkController {
 
@@ -17,9 +15,8 @@ class HostNetworkController extends NetworkController {
         "colour": colour.toString()
       }
     };
-
+    // assign listener
     super.onCreate = onCreate;
-
     channel.sink.add(jsonEncode(request));
   }
 
@@ -30,7 +27,6 @@ class HostNetworkController extends NetworkController {
         "room": roomNumber
       }
     };
-
     channel.sink.add(jsonEncode(request));
   }
 

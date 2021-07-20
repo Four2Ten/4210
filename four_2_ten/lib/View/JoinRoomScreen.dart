@@ -17,7 +17,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   List<int> currentDigits = List.empty(growable: true);
 
   void _onPressKey(int digit) {
-    print("pressed: " + digit.toString());
     setState(() {
       if (currentDigits.length < 4) {
         currentDigits.add(digit);
@@ -26,7 +25,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   }
 
   void _onDelete() {
-    print("delete");
     setState(() {
       currentDigits.removeLast();
     });

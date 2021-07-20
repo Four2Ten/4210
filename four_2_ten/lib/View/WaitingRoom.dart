@@ -27,8 +27,17 @@ class _WaitingRoomState extends State<WaitingRoom> {
     players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
     smallFontSize = GlobalConfiguration().getValue("smallFontSize");
 
+    this.gameController.attachJoinListener(onJoin);
     this.gameController.attachReadyListener(onReceiveReady);
     this.gameController.attachGameStartListener(onStartGame);
+  }
+
+  //Note: listen for other players joining
+  void onJoin() {
+    // TODO: remove duplication cuz same as below
+    setState(() {
+      players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
+    });
   }
 
   void onReceiveReady() {
