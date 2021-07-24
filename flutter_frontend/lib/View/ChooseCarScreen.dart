@@ -114,13 +114,19 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
                       SizedBox(height: rowAndTextFieldSpacing),
                       TextField(
                         onChanged: _onTextFieldChange,
+                        textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontFamily: "WalterTurncoat",
                           fontSize: smallFontSize,
                         ),
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          filled: true,
+                          fillColor: Colors.white,
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(4)
+                          ),
                           hintText: 'Enter your name...',
                           hintStyle: TextStyle(
                             color: Colors.grey,

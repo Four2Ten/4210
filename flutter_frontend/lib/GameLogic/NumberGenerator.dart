@@ -21,17 +21,21 @@ class NumberGenerator {
   bool _check(String number) {
     var digits = number.split("");
     var operators = ["+", "-", "/", "*"];
-    final digitsPermutations = Permutations(digits.length, digits);
-    final operatorsPermutations = Amalgams(digits.length - 1, operators);
-    for (final digitsPermutation in digitsPermutations()) {
-      for (final operatorsPermutation in operatorsPermutations()) {
+    var indices = new List<int>.generate(digits.length, (i) => i);
+    final indexPermutations = Permutations(indices.length, indices)();
+    final digitsPermutations = indexPermutations.map(
+      (indices) => indices.map((index) => digits[index]).toList()
+    );
+    final operatorsPermutations = Amalgams(digits.length - 1, operators)();
+    for (final digitsPermutation in digitsPermutations) {
+      for (final operatorsPermutation in operatorsPermutations) {
         int result = 0;
         for (int i = 0; i < digitsPermutation.length - 1; i++) {
           String firstOperand = digitsPermutation[i];
           String secondOperand = digitsPermutation[i + 1];
           String operator = operatorsPermutation[i];
           String expression = firstOperand + operator + secondOperand;
-          result += expression.interpret() as int;
+          result += expression.interpret().toInt();
         }
         if (result == 0) {
           return true;

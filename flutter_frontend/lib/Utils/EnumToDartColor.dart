@@ -17,8 +17,6 @@ class EnumToDartColor {
         return HexColor.fromHex('#FFD4D4');
       case Colour.red:
         return HexColor.fromHex('#FC7A7A');
-      default:
-        return HexColor.fromHex('#3775D1'); // Default to dark blue
     }
   }
 }
