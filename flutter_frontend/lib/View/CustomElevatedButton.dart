@@ -7,7 +7,7 @@ class CustomElevatedButton extends StatefulWidget {
   final String text;
   final Function() onPress;
 
-  CustomElevatedButton(this.text, this.onPress, {Key? key}) : super(key: key);
+  CustomElevatedButton(this.text, this.onPress, {Key key}) : super(key: key);
 
   @override
   _CustomElevatedButtonState createState() => _CustomElevatedButtonState(this.text, this.onPress);

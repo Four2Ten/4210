@@ -14,21 +14,21 @@ class RoomSettings extends StatefulWidget {
   final String title;
   final bool isSoloMode;
 
-  RoomSettings({this.title = "Settings", this.isSoloMode = false, Key? key}) : super(key: key);
+  RoomSettings({this.title = "Settings", this.isSoloMode = false, Key key}) : super(key: key);
 
   @override
   RoomSettingsState createState() => RoomSettingsState(isSoloMode: isSoloMode);
 }
 class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderStateMixin {
 
-  late HostGameController gameController;
+  HostGameController gameController;
 
-  late double _currentNumberOfQuestions;
-  late double _currentDurationValue;
-  late double minNumOfQuestions;
-  late double maxNumOfQuestions;
-  late double minRoundDuration;
-  late double maxRoundDuration;
+  double _currentNumberOfQuestions;
+  double _currentDurationValue;
+  double minNumOfQuestions;
+  double maxNumOfQuestions;
+  double minRoundDuration;
+  double maxRoundDuration;
 
   RoomSettingsState({bool isSoloMode = false}) {
     gameController = HostGameController();
@@ -104,6 +104,7 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   }
 
   void handleButtonPress() {
+    print("here");
     gameController.setRoomSettings(_currentNumberOfQuestions.round(),
         _currentDurationValue.round());
 

@@ -8,17 +8,17 @@ import 'NumberGenerator.dart';
 // Note: a Solo player is also a host, but they don't need Network
 class HostGameController extends GameController {
 
-  late Timer timer;
-  late int numberOfQuestions;
-  late int roundDuration;
-  late int roundNumber = 0;
-  late int numberOfPasses = 0;
+  Timer timer;
+  int numberOfQuestions;
+  int roundDuration;
+  int roundNumber = 0;
+  int numberOfPasses = 0;
 
   // For generating questions
-  late NumberGenerator numberGenerator = new NumberGenerator();
+  NumberGenerator numberGenerator = new NumberGenerator();
 
   // For "Challenge Yourself" Mode
-  late bool isSolo;
+  bool isSolo;
 
   HostGameController() : super() {
     networkController = HostNetworkController();

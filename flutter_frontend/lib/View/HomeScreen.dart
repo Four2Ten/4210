@@ -23,7 +23,7 @@ class HomeScreen extends StatefulWidget {
 
   final String title;
 
-  HomeScreen(this.title, {Key? key}) : super(key: key);
+  HomeScreen(this.title, {Key key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();

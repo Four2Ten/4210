@@ -15,7 +15,7 @@ class MainGameScreen extends StatefulWidget {
 
 class _MainGameScreenState extends State<MainGameScreen> {
   GameController gameController;
-  late List<int> currentQuestion;
+  List<int> currentQuestion;
 
   // TODO: this is the temporary status text on MainGameScreen. 
   // It will eventually be replaced by nicer UI

@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:four_2_ten/Model/Colour.dart';
 
 import 'NetworkController.dart';

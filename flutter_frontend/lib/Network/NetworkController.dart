@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_database/firebase_database.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:four_2_ten/Model/Colour.dart';
 import 'package:four_2_ten/Model/Player.dart';
@@ -25,15 +24,15 @@ class NetworkController {
   );
 
   // Function callbacks
-  late Function onJoin;
-  late Function onCreate;
-  late Function onReceiveReady;
-  late Function onStartGame;
-  late Function onStartRound;
-  late Function onGetCorrect;
-  late Function onPass = () {}; // default
-  late Function onTimeUp;
-  late Function onEndGame;
+  Function onJoin;
+  Function onCreate;
+  Function onReceiveReady;
+  Function onStartGame;
+  Function onStartRound;
+  Function onGetCorrect;
+  Function onPass = () {}; // default
+  Function onTimeUp;
+  Function onEndGame;
 
   NetworkController() {
     _attachListener();

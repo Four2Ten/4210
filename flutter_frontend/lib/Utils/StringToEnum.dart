@@ -21,7 +21,7 @@ class StringToEnum {
     }
   }
 
-  static GameState? stringToGameStateEnum(String string) {
+  static GameState stringToGameStateEnum(String string) {
     switch(string) {
       case "roundEnd":
           return GameState.roundEnd;

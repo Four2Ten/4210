@@ -24,8 +24,8 @@ class ChooseCarScreen extends StatefulWidget {
 class ChooseCarScreenState extends State<ChooseCarScreen> {
   GameController gameController;
 
-  late Colour _chosenColour;
-  late String _name;
+  Colour _chosenColour;
+  String _name;
 
   ChooseCarScreenState(this.gameController);
 

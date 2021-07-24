@@ -40,7 +40,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
     }
   }
 
-  Widget _getButton(String text, double size, double fontSize, bool isPressed, {int? index}) {
+  Widget _getButton(String text, double size, double fontSize, bool isPressed, {int index}) {
     return SizedBox(
       width: size,
       height: size,
@@ -77,7 +77,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
     );
   }
 
-  Widget _getRow(double size, List<String> texts, List<double> fontSizes, {int? firstIndex, int? secondIndex}) {
+  Widget _getRow(double size, List<String> texts, List<double> fontSizes, {int firstIndex, int secondIndex}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [

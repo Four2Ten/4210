@@ -7,14 +7,14 @@ class FallingImage extends StatefulWidget {
   final String imagePath;
   final double delay;
 
-  FallingImage(this.imagePath, this.delay, {Key? key}) : super(key: key);
+  FallingImage(this.imagePath, this.delay, {Key key}) : super(key: key);
 
   @override
   _FallingImageState createState() => _FallingImageState(this.imagePath, this.delay);
 }
 class _FallingImageState extends State<FallingImage> with SingleTickerProviderStateMixin {
-  late AnimationController _animationController;
-  late Animation<double> curvedAnimation;
+  AnimationController _animationController;
+  Animation<double> curvedAnimation;
   final _random = new Random();
   final String imagePath;
   final double delay;

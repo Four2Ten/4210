@@ -15,18 +15,18 @@ class GameController {
   // static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // game information
   List<Player> otherPlayers = <Player>[];
-  late Player currPlayer;
+  Player currPlayer;
   // String id; // user id
   // GameState gameState;
-  late String pin; // room pin
+  String pin; // room pin
   // List<int> roundDurationIntervals;
-  late String currentQuestion;
+  String currentQuestion;
 
   // network controller
-  late NetworkController networkController;
+  NetworkController networkController;
 
   // Callback to update UI
-  late Function uiCallback;
+  Function uiCallback;
 
   GameController() {
     networkController = NetworkController();
