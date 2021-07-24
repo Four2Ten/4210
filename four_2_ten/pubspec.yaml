@@ -27,6 +27,7 @@ dependencies:
   firebase_database: "^4.4.0"
   trotter: "^1.2.0"
   global_configuration: "^1.6.0"
+  function_tree: "^0.7.0"
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

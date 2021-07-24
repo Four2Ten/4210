@@ -56,10 +56,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Widget> _getInstructions(TextStyle textStyle)  {
     String text = Instructions.getInstructions();
-    List<String> splitText = text.split("\n");
-    return new List<Widget>.generate(splitText.length, (int index) {
-      return new Text(splitText[index], style: textStyle);
+    return new List<Widget>.generate(1, (int index) {
+      return new Text(text, style: textStyle);
     });
+    // List<String> splitText = text.split("\n");
+    // return new List<Widget>.generate(splitText.length, (int index) {
+    //   return new Text(splitText[index], style: textStyle);
+    // });
   }
 
   Future<void> _showInstructions() async {
@@ -67,28 +70,32 @@ class _HomeScreenState extends State<HomeScreen> {
       color: Colors.white,
       fontFamily: 'DidactGothic',
       fontSize: GlobalConfiguration().getValue("smallFontSize"),
-      height: 1.5
+      height: 1.5,
+
     );
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('How to Play', style: textStyle),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: _getInstructions(textStyle)
-            ),
+          title: Text('How to Play?', style: textStyle),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(20.0))
           ),
+          backgroundColor: HexColor.fromHex('#372549'),
+          content: SingleChildScrollView(
+              child: ListBody(
+                children: _getInstructions(textStyle),
+              ),
+            ),
           actions: <Widget>[
             TextButton(
-              child: Text('Okay', style: textStyle),
+              child: Text('Got it!', style: textStyle),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
           ],
-          backgroundColor: HexColor.fromHex('#372549'),
         );
       },
     );

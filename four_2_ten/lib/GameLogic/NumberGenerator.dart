@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:trotter/trotter.dart';
+import 'package:function_tree/function_tree.dart';
 
 class NumberGenerator {
 
@@ -19,36 +20,25 @@ class NumberGenerator {
 
   bool _check(String number) {
     var digits = number.split("");
-    digits.map((digit) => int.parse(digit));
-
-    var expressions = _generateExpressions(digits);
-  }
-
-  [String] _generateExpressions(digits) {
-    final permutations = Permutations(digits.length, digits);
-    for (final permutation in permutations()) {
-      var withOperators = _insertOperators(permutation);
-    }
-  }
-
-  // (1 + (2)) + (3) + (4)
-
-  [[String]] _insertOperators(digits) {
     var operators = ["+", "-", "/", "*"];
-    final operatorAmalgams = Amalgams(digits.length - 1, operators);
-    [[String]] withOperators = [];
-    for (final operatorAmalgam in operatorAmalgams()) {
-      [String] result = [];
-      for (int i = 0; i < digits.length; i++) {
-        String digit = digits[i];
-        result.add(digit);
-        if (i != digits.length - 1){
-          result.add(operatorAmalgan[i]);
+    final digitsPermutations = Permutations(digits.length, digits);
+    final operatorsPermutations = Amalgams(digits.length - 1, operators);
+    for (final digitsPermutation in digitsPermutations()) {
+      for (final operatorsPermutation in operatorsPermutations()) {
+        int result = 0;
+        for (int i = 0; i < digitsPermutation.length - 1; i++) {
+          String firstOperand = digitsPermutation[i];
+          String secondOperand = digitsPermutation[i + 1];
+          String operator = operatorsPermutation[i];
+          String expression = firstOperand + operator + secondOperand;
+          result += expression.interpret();
+        }
+        if (result == 0) {
+          return true;
         }
       }
-      withOperators.add(result);
     }
-    return withOperators;
+    return false;
   }
 
   String _getRandom(int min, int max) {
