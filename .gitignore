@@ -65,3 +65,6 @@ doc/api/
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 !/packages/flutter_tools/test/data/dart_dependencies_test/**/.packages
+
+# node modules in backend server
+backend_server/node_modules
