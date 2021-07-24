@@ -8,17 +8,17 @@ import 'NumberGenerator.dart';
 // Note: a Solo player is also a host, but they don't need Network
 class HostGameController extends GameController {
 
-  Timer timer;
-  int numberOfQuestions;
-  int roundDuration;
-  int roundNumber = 0;
-  int numberOfPasses = 0;
+  late Timer timer;
+  late int numberOfQuestions;
+  late int roundDuration;
+  late int roundNumber = 0;
+  late int numberOfPasses = 0;
 
   // For generating questions
-  NumberGenerator numberGenerator = new NumberGenerator();
+  late NumberGenerator numberGenerator = new NumberGenerator();
 
   // For "Challenge Yourself" Mode
-  bool isSolo;
+  late bool isSolo;
 
   HostGameController() : super() {
     networkController = HostNetworkController();
@@ -130,17 +130,15 @@ class HostGameController extends GameController {
     }
   }
 
-  /*
+/*
   void startGame() {
     int interval = (this.roundDuration / 3).floor();
     List<int> roundDurationIntervals = [interval, 2 * interval, 3 * interval];
     (networkController as HostNetworkController).startGame(this.pin, roundDurationIntervals);
   }
-
   void startRound() {
     (networkController as HostNetworkController).startRound(this.pin);
   }
-
   @override
   void handleGameStateChange(GameState gameState) {
     super.handleGameStateChange(gameState);
@@ -148,7 +146,6 @@ class HostGameController extends GameController {
       this.timer = new Timer(Duration(seconds: this.roundDuration), handleRoundEnd);
     }
   }
-
   void handleRoundEnd() {
     (networkController as HostNetworkController).endRound(this.pin);
   }

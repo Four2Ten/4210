@@ -11,7 +11,6 @@ import "dart:math";
 import 'package:global_configuration/global_configuration.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({Key key, this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -23,6 +22,8 @@ class HomeScreen extends StatefulWidget {
   // always marked "final".
 
   final String title;
+
+  HomeScreen(this.title, {Key? key}) : super(key: key);
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -36,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   List<Widget> _generateFallingCars(int number) {
-    List<String> fallingCarsPaths = new List<String>();
+    List<String> fallingCarsPaths = <String>[];
     List<String> carAssetPaths = [
       'lib/assets/images/red_car.png',
       'lib/assets/images/pink_car.png',
@@ -51,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     double delay = 1 / (2 * number);
     return new List<Widget>.generate(fallingCarsPaths.length, (int index) {
-      return new FallingImage(imagePath: fallingCarsPaths[index], delay: delay * index);
+      return new FallingImage(fallingCarsPaths[index], delay * index);
     });
   }
 
@@ -157,11 +158,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: [
                           Image(image: AssetImage('lib/assets/images/home_screen_title.png')),
                           SizedBox(height: gap),
-                          CustomElevatedButton(text: 'create new room', onPress: onCreateNewRoom),
+                          CustomElevatedButton('create new room', onCreateNewRoom),
                           SizedBox(height: gap),
-                          CustomElevatedButton(text: 'join a room', onPress: onJoinRoom),
+                          CustomElevatedButton('join a room', onJoinRoom),
                           SizedBox(height: gap),
-                          CustomElevatedButton(text: 'challenge yourself', onPress: onChallengeYourself),
+                          CustomElevatedButton('challenge yourself', onChallengeYourself),
                         ]
                   ),
                 ),

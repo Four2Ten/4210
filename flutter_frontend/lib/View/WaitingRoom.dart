@@ -19,13 +19,12 @@ class WaitingRoom extends StatefulWidget {
 
 class _WaitingRoomState extends State<WaitingRoom> {
   GameController gameController;
-  List<Player> players;
-  double smallFontSize;
+  late List<Player> players;
+  late double smallFontSize;
 
-  _WaitingRoomState(GameController gameController) {
-    this.gameController = gameController;
-    players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
-    smallFontSize = GlobalConfiguration().getValue("smallFontSize");
+  _WaitingRoomState(this.gameController) {
+    this.players = [gameController.currPlayer, ...gameController.otherPlayers]; // add self to list of players
+    this.smallFontSize = GlobalConfiguration().getValue("smallFontSize");
 
     this.gameController.attachJoinListener(onJoin);
     this.gameController.attachReadyListener(onReceiveReady);
@@ -53,7 +52,7 @@ class _WaitingRoomState extends State<WaitingRoom> {
     );
   }
 
-  Widget _getPlayerIcon(Player player, double width) {
+  Widget _getPlayerIcon(Player? player, double width) {
     Colour colour = player != null ? player.colour : Colour.lightBlue; // TODO: change this to a placeholder
     String name = player != null ? player.name : '---'; // TODO: change this to a placeholder
     bool isPlayerReady = player != null && player.isReady; // TODO: change this to a placeholder
@@ -80,7 +79,7 @@ class _WaitingRoomState extends State<WaitingRoom> {
   }
 
   // returns null if index out of range
-  Player _getPlayer(int index) {
+  Player? _getPlayer(int index) {
     print("players length " + players.length.toString());
     if (index >= players.length) {
       return null;

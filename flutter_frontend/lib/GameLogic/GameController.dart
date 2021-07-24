@@ -14,19 +14,19 @@ class GameController {
   // platform specific channels (mainly for firebase id)
   // static const android_id_channel = const MethodChannel("com.example.four_2_ten/android_channel");
   // game information
-  List<Player> otherPlayers = new List<Player>();
-  Player currPlayer;
+  List<Player> otherPlayers = <Player>[];
+  late Player currPlayer;
   // String id; // user id
   // GameState gameState;
-  String pin; // room pin
+  late String pin; // room pin
   // List<int> roundDurationIntervals;
-  String currentQuestion;
+  late String currentQuestion;
 
   // network controller
-  NetworkController networkController;
+  late NetworkController networkController;
 
   // Callback to update UI
-  Function uiCallback;
+  late Function uiCallback;
 
   GameController() {
     networkController = NetworkController();
@@ -115,7 +115,7 @@ class GameController {
     return AnswerChecker.check(userExpression, questionString);
   }
 
-  /*
+/*
   Future<String> _getId() async {
     try {
       if (Platform.isAndroid) {
@@ -131,7 +131,6 @@ class GameController {
       return null;
     }
   }
-
   // note: removed `pin` from arguments as it can be obtained from class property
   void joinRoom(String name, Colour colour) async {
     if (this.id == null) {
@@ -145,7 +144,6 @@ class GameController {
       // TODO: inform view of error
     }
   }
-
   void handleNewPlayer(String pin, Player player) {
     String playerId = player.id;
     if (playerId == this.id) {
@@ -155,7 +153,6 @@ class GameController {
       otherPlayers.add(player);
     }
   }
-
   void handleGameStateChange(GameState gameState) {
     this.gameState = gameState;
     switch(gameState) {
@@ -178,17 +175,14 @@ class GameController {
       }
     }
   }
-
   void pauseGame() {
     networkController.pauseGame(this.pin);
   }
-
   void attachRoomListeners(String pin) {
     // listener to detect new players
     networkController.attachPlayerJoinListener(pin, handleNewPlayer);
     networkController.attachGameStateListener(pin, handleGameStateChange);
   }
-
   void startRound() {
     (networkController as HostNetworkController).startRound(this.pin);
   }

@@ -15,14 +15,13 @@ class MainGameScreen extends StatefulWidget {
 
 class _MainGameScreenState extends State<MainGameScreen> {
   GameController gameController;
-  List<int> currentQuestion;
+  late List<int> currentQuestion;
 
   // TODO: this is the temporary status text on MainGameScreen. 
   // It will eventually be replaced by nicer UI
   String status = "Round 1";
 
-  _MainGameScreenState(GameController gameController) {
-    this.gameController = gameController;
+  _MainGameScreenState(this.gameController) {
     this.gameController.uiCallback = onStartNewRound;
 
     if (gameController.isHost && (gameController as HostGameController).isSolo) {

@@ -3,16 +3,18 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class FallingImage extends StatefulWidget {
-  FallingImage({Key key, this.imagePath, this.delay}) : super(key: key);
+
   final String imagePath;
   final double delay;
+
+  FallingImage(this.imagePath, this.delay, {Key? key}) : super(key: key);
 
   @override
   _FallingImageState createState() => _FallingImageState(this.imagePath, this.delay);
 }
 class _FallingImageState extends State<FallingImage> with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
-  Animation curvedAnimation;
+  late AnimationController _animationController;
+  late Animation<double> curvedAnimation;
   final _random = new Random();
   final String imagePath;
   final double delay;

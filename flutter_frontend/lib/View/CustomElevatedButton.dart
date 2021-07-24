@@ -3,10 +3,11 @@ import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:global_configuration/global_configuration.dart';
 
 class CustomElevatedButton extends StatefulWidget {
-  CustomElevatedButton({Key key, this.text, this.onPress}) : super(key: key);
 
   final String text;
   final Function() onPress;
+
+  CustomElevatedButton(this.text, this.onPress, {Key? key}) : super(key: key);
 
   @override
   _CustomElevatedButtonState createState() => _CustomElevatedButtonState(this.text, this.onPress);

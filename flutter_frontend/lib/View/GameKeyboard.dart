@@ -40,7 +40,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
     }
   }
 
-  Widget _getButton(String text, double size, double fontSize, bool isPressed, {int index}) {
+  Widget _getButton(String text, double size, double fontSize, bool isPressed, {int? index}) {
     return SizedBox(
       width: size,
       height: size,
@@ -55,7 +55,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
             }
 
             RegExp _numeric = RegExp(r'^[0-9]$');
-            if (_numeric.hasMatch(text)) {
+            if (_numeric.hasMatch(text) && index != null) {
               setState(() {
                 widget.isPressedStates[index] = true;
                 widget.pressedIndices.add(index);
@@ -77,7 +77,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
     );
   }
 
-  Widget _getRow(double size, List<String> texts, List<double> fontSizes, {int firstIndex, int secondIndex}) {
+  Widget _getRow(double size, List<String> texts, List<double> fontSizes, {int? firstIndex, int? secondIndex}) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
@@ -135,7 +135,7 @@ class _GameKeyboardState extends State<GameKeyboard> {
   }
 
   void _onDelete() {
-    if (widget.currentString != null && widget.currentString.length > 0) {
+    if (widget.currentString.length > 0) {
       setState(() {
         String lastCharacter = widget.currentString.substring(widget.currentString.length - 1);
         RegExp _numeric = RegExp(r'^[0-9]$');

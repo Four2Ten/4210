@@ -24,8 +24,8 @@ class ChooseCarScreen extends StatefulWidget {
 class ChooseCarScreenState extends State<ChooseCarScreen> {
   GameController gameController;
 
-  Colour _chosenColour;
-  String _name;
+  late Colour _chosenColour;
+  late String _name;
 
   ChooseCarScreenState(this.gameController);
 
@@ -130,7 +130,7 @@ class ChooseCarScreenState extends State<ChooseCarScreen> {
                         ),
                       ),
                       SizedBox(height: textFieldAndButtonSpacing),
-                      CustomElevatedButton(text: 'Enter Game', onPress: _onPressEnterGame),
+                      CustomElevatedButton('Enter Game', _onPressEnterGame),
                     ]
                   ),
                 )

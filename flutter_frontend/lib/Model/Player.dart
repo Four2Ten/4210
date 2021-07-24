@@ -5,14 +5,9 @@ class Player {
   String name;
   int score = 0;
   Colour colour;
-  bool isReady;
+  bool isReady = false;
 
-  Player(String id, String name, Colour colour) {
-    this.id = id;
-    this.name = name;
-    this.colour = colour;
-    this.isReady = false;
-  }
+  Player(this.id, this.name, this.colour);
 
   void incrementScore() {
     this.score++;

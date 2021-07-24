@@ -25,15 +25,15 @@ class NetworkController {
   );
 
   // Function callbacks
-  Function onJoin;
-  Function onCreate;
-  Function onReceiveReady;
-  Function onStartGame;
-  Function onStartRound;
-  Function onGetCorrect;
-  Function onPass = () {}; // default
-  Function onTimeUp;
-  Function onEndGame;
+  late Function onJoin;
+  late Function onCreate;
+  late Function onReceiveReady;
+  late Function onStartGame;
+  late Function onStartRound;
+  late Function onGetCorrect;
+  late Function onPass = () {}; // default
+  late Function onTimeUp;
+  late Function onEndGame;
 
   NetworkController() {
     _attachListener();

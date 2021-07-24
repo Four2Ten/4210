@@ -85,7 +85,7 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                   _getInput(),
                   SizedBox(height: inputAndButtonSpacing),
                   Opacity(
-                    child: CustomElevatedButton(text: 'head to garage', onPress: _onPressButton),
+                    child: CustomElevatedButton('head to garage', _onPressButton),
                     opacity: currentDigits.length == 4 ? 1.0 : 0.0,
                   ),
                   SizedBox(height: buttonAndKeyboardSpacing),
