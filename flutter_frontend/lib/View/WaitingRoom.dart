@@ -164,7 +164,7 @@ class _WaitingRoomState extends State<WaitingRoom> {
     double topSpacing = screenHeight * 0.1;
     double headerAndPinSpacing = screenHeight * 0.06;
     double pinAndCarsSpacing = screenHeight * 0.08;
-    double carsAndButtonSpacing = screenHeight * 0.02;
+    double carsAndButtonSpacing = screenHeight * 0.05;
 
     return Scaffold(
       backgroundColor: HexColor.fromHex('#372549'),

@@ -16,8 +16,6 @@ class StringToEnum {
           return Colour.pink;
       case "red":
           return Colour.red;
-      default:
-          return Colour.darkBlue; // Default to dark blue
     }
   }
 
