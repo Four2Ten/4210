@@ -37,7 +37,7 @@ class NumberGenerator {
           String expression = firstOperand + operator + secondOperand;
           result += expression.interpret().toInt();
         }
-        if (result == 0) {
+        if (result == 10) {
           return true;
         }
       }
