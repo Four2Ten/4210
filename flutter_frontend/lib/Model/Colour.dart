@@ -1,8 +1,8 @@
 enum Colour {
-  darkBlue,
   lightBlue,
-  green,
   orange,
+  green,
+  darkBlue,
   pink,
   red,
 }

@@ -52,68 +52,134 @@ class _WaitingRoomState extends State<WaitingRoom> {
     );
   }
 
-  Widget _getPlayerIcon(Player player, double width) {
-    Colour colour = player != null ? player.colour : Colour.lightBlue; // TODO: change this to a placeholder
-    String name = player != null ? player.name : '---'; // TODO: change this to a placeholder
-    bool isPlayerReady = player != null && player.isReady; // TODO: change this to a placeholder
-    print("========");
-    print("colour is " + colour.toString());
-    String source = Commons.colourToAssetString(colour);
-
-    return Column(
-      children: [
-        Image(
-          image: AssetImage(source),
-          width: width,
-        ),
-        Text(
-          name,
-          style: TextStyle(
-            color: isPlayerReady ? Colors.red : Colors.grey,
-            fontFamily: "WalterTurncoat",
-            fontSize: smallFontSize,
-          ),
-        )
-      ],
-    );
-  }
-
-  // returns null if index out of range
-  Player _getPlayer(int index) {
-    print("players length " + players.length.toString());
-    if (index >= players.length) {
-      return null;
-    } else {
-      return players[index];
+  Widget _getIcon(Colour colour, String name, double width, double opacity) {
+      String caption = name == null ? 'Waiting...' : name;
+      String source = Commons.colourToAssetString(colour);
+      return Column(
+        children: [
+          Opacity(
+            opacity: opacity,
+            child: Image(
+                image: AssetImage(source),
+                width: width,
+              ),
+            ),
+          Text(
+            caption,
+            style: TextStyle(
+              color: Colors.grey,
+              fontFamily: "WalterTurncoat",
+              fontSize: smallFontSize,
+            ),
+          )
+        ],
+      );
     }
-  }
 
   Widget _getAllPlayerIcons(double screenWidth, double screenHeight) {
     double imageWidth = screenWidth / 5;
     double spacing = screenHeight * 0.03;
+
+    var colourAssignment = new Map();
+    for (Player player in players) {
+      colourAssignment[player.colour] = player;
+    }
+
+    List<Widget> playerIcons = <Widget>[];
+    Colour.values.forEach((colour) {
+      if (colourAssignment.containsKey(colour)) {
+        String playerName = colourAssignment[colour].name;
+        playerIcons.add(_getIcon(colour, playerName, imageWidth, 1));
+      } else {
+        playerIcons.add(_getIcon(colour, null, imageWidth, 0.5));
+      }
+    });
 
     return Column(
       children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _getPlayerIcon(_getPlayer(0), imageWidth),
-            _getPlayerIcon(_getPlayer(1), imageWidth),
-            _getPlayerIcon(_getPlayer(2), imageWidth),
+            playerIcons[0],
+            playerIcons[1],
+            playerIcons[2]
           ],
         ),
         SizedBox(height: spacing),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _getPlayerIcon(_getPlayer(3), imageWidth),
-            _getPlayerIcon(_getPlayer(4), imageWidth),
-            _getPlayerIcon(_getPlayer(5), imageWidth),
+            playerIcons[3],
+            playerIcons[4],
+            playerIcons[5]
           ],
         )
       ],
     );
   }
+
+  // Widget _getPlayerIcon(Player player, double width) {
+  //   Colour colour = player != null ? player.colour : Colour.lightBlue; // TODO: change this to a placeholder
+  //   String name = player != null ? player.name : '---'; // TODO: change this to a placeholder
+  //   bool isPlayerReady = player != null && player.isReady; // TODO: change this to a placeholder
+  //   print("========");
+  //   print("colour is " + colour.toString());
+  //   String source = Commons.colourToAssetString(colour);
+  //
+  //   return Column(
+  //     children: [
+  //       Image(
+  //         image: AssetImage(source),
+  //         width: width,
+  //       ),
+  //       Text(
+  //         name,
+  //         style: TextStyle(
+  //           color: isPlayerReady ? Colors.red : Colors.grey,
+  //           fontFamily: "WalterTurncoat",
+  //           fontSize: smallFontSize,
+  //         ),
+  //       )
+  //     ],
+  //   );
+  // }
+  //
+  // // returns null if index out of range
+  // Player _getPlayer(int index) {
+  //   print("players length " + players.length.toString());
+  //   if (index >= players.length) {
+  //     return null;
+  //   } else {
+  //     return players[index];
+  //   }
+  // }
+  //
+  // Widget _getAllPlayerIcons(double screenWidth, double screenHeight) {
+  //   double imageWidth = screenWidth / 5;
+  //   double spacing = screenHeight * 0.03;
+  //
+  //   return Column(
+  //     children: [
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         children: <Widget>[
+  //           _getPlayerIcon(_getPlayer(0), imageWidth),
+  //           _getPlayerIcon(_getPlayer(1), imageWidth),
+  //           _getPlayerIcon(_getPlayer(2), imageWidth),
+  //         ],
+  //       ),
+  //       SizedBox(height: spacing),
+  //       Row(
+  //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  //         children: <Widget>[
+  //           _getPlayerIcon(_getPlayer(3), imageWidth),
+  //           _getPlayerIcon(_getPlayer(4), imageWidth),
+  //           _getPlayerIcon(_getPlayer(5), imageWidth),
+  //         ],
+  //       )
+  //     ],
+  //   );
+  // }
 
   void _onPressStart() {
     if (gameController.isHost) {
