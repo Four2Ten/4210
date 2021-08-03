@@ -19,9 +19,8 @@ class NumberGenerator {
   }
 
   int _calculateResult(digits, operators) {
-    int result = 0;
+    int result = int.parse(digits[0]);
     for (int i = 0; i < digits.length - 1; i++) {
-      String firstOperand = digits[i];
       String secondOperand = digits[i + 1];
       String operator = operators[i];
 
@@ -29,8 +28,8 @@ class NumberGenerator {
         return null; // Return null upon division by 0
       }
 
-      String expression = firstOperand + operator + secondOperand;
-      result += expression.interpret().toInt();
+      String expression = result.toString() + operator + secondOperand;
+      result = expression.interpret().toInt();
     }
     return result;
   }
