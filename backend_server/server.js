@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 var WebSocketServer = require('websocket').server;
 var http = require('http');
+var logger = require('logger').createLogger();
 
 var server = http.createServer(function(request, response) {
-    console.log((new Date()) + ' Received request for ' + request.url);
+    logger.info('Received request for', request.url);
     response.writeHead(404);
     response.end();
 });
 server.listen(8080, function() {
-    console.log((new Date()) + ' Server is listening on port 8080');
+    logger.info('Server is listening on port 8080');
 });
 
 // GLOBAL VARS
@@ -107,7 +108,7 @@ function parseMessage(message, connection) {
       }
       break;
     default:
-      console.log("Should not reach here!");  
+      logger.warn('Parsing of message should not reach default case');
   }
 }
 
@@ -115,26 +116,26 @@ wsServer.on('request', function(request) {
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
-      console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
+      logger.info('Connection from origin', request.origin, 'rejected');
       return;
     }
     
     // var connection = request.accept('echo-protocol', request.origin);
     var connection = request.accept(null, request.origin);
-    console.log((new Date()) + ' Connection accepted.');
+    logger.info('Connection accepted.');
     connection.on('message', function(message) {
         if (message.type === 'utf8') {
-            console.log('Received Message: ' + message.utf8Data);
+            logger.info('Received Message:', message.utf8Data);
             // const reply = parseMessage(message.utf8Data, connection);
             // connection.sendUTF(reply);
             parseMessage(message.utf8Data, connection); // parseMessage() does the reply as well
         }
         else if (message.type === 'binary') {
-            console.log('Received Binary Message of ' + message.binaryData.length + ' bytes');
+            logger.info('Received Binary Message of', message.binaryData.length, 'bytes');
             connection.sendBytes(message.binaryData);
         }
     });
     connection.on('close', function(reasonCode, description) {
-        console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+        logger.info('Peer', connection.remoteAddress, 'disconnected');
     });
 });
