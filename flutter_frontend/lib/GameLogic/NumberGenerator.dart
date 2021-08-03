@@ -18,6 +18,23 @@ class NumberGenerator {
     return randomNumber;
   }
 
+  int calculate_result(digits, operators) {
+    int result = 0;
+    for (int i = 0; i < digits.length - 1; i++) {
+      String firstOperand = digits[i];
+      String secondOperand = digits[i + 1];
+      String operator = operators[i];
+
+      if (secondOperand == '0' && operator == "/") {
+        return null;
+      }
+
+      String expression = firstOperand + operator + secondOperand;
+      result += expression.interpret().toInt();
+    }
+    return result;
+  }
+
   bool _check(String number) {
     var digits = number.split("");
     var operators = ["+", "-", "/", "*"];
@@ -29,14 +46,7 @@ class NumberGenerator {
     final operatorsPermutations = Amalgams(digits.length - 1, operators)();
     for (final digitsPermutation in digitsPermutations) {
       for (final operatorsPermutation in operatorsPermutations) {
-        int result = 0;
-        for (int i = 0; i < digitsPermutation.length - 1; i++) {
-          String firstOperand = digitsPermutation[i];
-          String secondOperand = digitsPermutation[i + 1];
-          String operator = operatorsPermutation[i];
-          String expression = firstOperand + operator + secondOperand;
-          result += expression.interpret().toInt();
-        }
+        int result = calculate_result(digitsPermutation, operatorsPermutation);
         if (result == 10) {
           return true;
         }
