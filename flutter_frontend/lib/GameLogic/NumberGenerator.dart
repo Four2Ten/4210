@@ -18,7 +18,7 @@ class NumberGenerator {
     return randomNumber;
   }
 
-  int calculate_result(digits, operators) {
+  int _calculateResult(digits, operators) {
     int result = 0;
     for (int i = 0; i < digits.length - 1; i++) {
       String firstOperand = digits[i];
@@ -26,7 +26,7 @@ class NumberGenerator {
       String operator = operators[i];
 
       if (secondOperand == '0' && operator == "/") {
-        return null;
+        return null; // Return null upon division by 0
       }
 
       String expression = firstOperand + operator + secondOperand;
@@ -46,7 +46,7 @@ class NumberGenerator {
     final operatorsPermutations = Amalgams(digits.length - 1, operators)();
     for (final digitsPermutation in digitsPermutations) {
       for (final operatorsPermutation in operatorsPermutations) {
-        int result = calculate_result(digitsPermutation, operatorsPermutation);
+        int result = _calculateResult(digitsPermutation, operatorsPermutation);
         if (result == 10) {
           return true;
         }
