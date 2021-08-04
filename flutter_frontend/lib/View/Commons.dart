@@ -13,6 +13,16 @@ class Commons {
     return new Text(string, style: textStyle, textAlign: TextAlign.center);
   }
 
+  static Text getError(String string) {
+    double smallFontSize = GlobalConfiguration().getValue("smallFontSize");
+    TextStyle textStyle = TextStyle(
+      color: Colors.pinkAccent,
+      fontFamily: "WalterTurncoat",
+      fontSize: smallFontSize,
+    );
+    return new Text(string, style: textStyle, textAlign: TextAlign.center);
+  }
+
   static colourToAssetString(Colour colour) {
     switch (colour) {
       case Colour.darkBlue:

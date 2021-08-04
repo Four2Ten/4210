@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:four_2_ten/Config/appConfig.dart';
+import 'package:four_2_ten/GameLogic/GameController.dart';
 import 'package:four_2_ten/Utils/HexColor.dart';
 import 'package:four_2_ten/Utils/Instructions.dart';
 import 'package:four_2_ten/View/CustomElevatedButton.dart';
@@ -127,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void onJoinRoom() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => JoinRoomScreen()),
+      MaterialPageRoute(builder: (context) => JoinRoomScreen(new GameController())),
     );
   }
 

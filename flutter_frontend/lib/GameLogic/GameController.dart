@@ -80,6 +80,14 @@ class GameController {
     networkController.attachGameStartListener(onStartGame);
   }
 
+  void checkRoom(String roomNumber) {
+    networkController.checkRoom(roomNumber);
+  }
+
+  void attachCheckRoomListener(Function onCheckRoom) {
+    networkController.attachCheckRoomListener(onCheckRoom);
+  }
+
   void attachMainGameListeners(Function onStartRound, Function onGetCorrect,
       Function onTimeUp, Function onEndGame) {
     var onGetCorrectCallback = (String name, int score, String correctAnswer) {
