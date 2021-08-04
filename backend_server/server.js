@@ -47,8 +47,9 @@ function parseMessage(message, connection) {
   const object = JSON.parse(message);
   const type = object.type;
   const body = object.body;
+  print(object);
   switch (type) {
-    case "CREATE_ROOM":
+    case 'CREATE_ROOM':
       const newRoom = getNewRoom();
       var player = {
         name: body.name,
@@ -66,7 +67,7 @@ function parseMessage(message, connection) {
       });
       connection.sendUTF(JSON.stringify(reply));
       break;
-    case "JOIN_ROOM":
+    case 'JOIN_ROOM':
       var roomNumber = body.room;
       player = {
         name: body.name,
@@ -92,13 +93,31 @@ function parseMessage(message, connection) {
         // implement later
       }
       break;
-    case "INDICATE_READY": // fall through
-    case "START_GAME": // fall through
-    case "START_ROUND": // fall through
-    case "GET_CORRECT": // fall through
-    case "PASS": // fall through
-    case "TIME_UP": // fall through
-    case "END_GAME":
+    case 'CHECK_ROOM':
+       var roomNumber: body.room;
+       var reply = {
+         type: "CHECK_ROOM_REPLY",
+       }
+       if (rooms.has(roomNumber)) {
+         reply.body =  {
+            message: "Room exists",
+            player: mapping.get(roomNumber).players
+         }
+       } else {
+         reply.body =  {
+             message: "Room does not exist",
+             player: null
+         }
+       }
+       connection.sendUTF(JSON.stringify(reply));
+       break;
+    case 'INDICATE_READY': // fall through
+    case 'START_GAME': // fall through
+    case 'START_ROUND': // fall through
+    case 'GET_CORRECT': // fall through
+    case 'PASS': // fall through
+    case 'TIME_UP': // fall through
+    case 'END_GAME':
       roomNumber = JSON.parse(message).body.room; // TODO: handle wrong room number
       clients = mapping.get(roomNumber).clients;
       // send every client
@@ -112,6 +131,7 @@ function parseMessage(message, connection) {
 }
 
 wsServer.on('request', function(request) {
+    console.log("here");
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
