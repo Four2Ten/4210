@@ -8,11 +8,37 @@ import 'ChooseCarScreen.dart';
 import 'Commons.dart';
 
 class JoinRoomScreen extends StatefulWidget {
+  final GameController gameController;
+
+  JoinRoomScreen(this.gameController);
+
   @override
-  _JoinRoomScreenState createState() => _JoinRoomScreenState();
+  _JoinRoomScreenState createState() => _JoinRoomScreenState(gameController);
 }
 
 class _JoinRoomScreenState extends State<JoinRoomScreen> {
+  GameController gameController;
+  bool hasInvalidRoom = false;
+
+  _JoinRoomScreenState(this.gameController) {
+    this.gameController.attachCheckRoomListener(onCheckRoom);
+  }
+
+  // Callback for checking if room exists
+  // Changes to the choose car screen if room exists
+  // Else, shows error on UI
+  void onCheckRoom(bool success, String roomNumber) {
+    if (success) {
+      this.hasInvalidRoom = false;
+      gameController.pin = roomNumber;
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),
+      );
+    } else {
+      this.hasInvalidRoom = true;
+    }
+  }
 
   List<int> currentDigits = List.empty(growable: true);
 
@@ -52,14 +78,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   }
 
   void _onPressButton() {
-    GameController gameController = new GameController();
-    gameController.pin = currentDigits.map((e) => e.toString()).join("");
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => ChooseCarScreen(gameController)),
-    );
+    gameController.checkRoom(currentDigits.map((e) => e.toString()).join(""));
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -84,6 +105,9 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
                   SizedBox(height: topSpacing),
                   _getInput(),
                   SizedBox(height: inputAndButtonSpacing),
+                  if (this.hasInvalidRoom) ... [
+                    Commons.getError("This room doesn't exist yet"),
+                  ],
                   Opacity(
                     child: CustomElevatedButton('head to garage', _onPressButton),
                     opacity: currentDigits.length == 4 ? 1.0 : 0.0,

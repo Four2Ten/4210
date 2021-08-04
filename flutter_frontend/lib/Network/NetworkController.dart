@@ -25,6 +25,7 @@ class NetworkController {
 
   // Function callbacks
   Function onJoin;
+  Function onCheckRoom;
   Function onCreate;
   Function onReceiveReady;
   Function onStartGame;
@@ -62,6 +63,12 @@ class NetworkController {
             // TODO: implement
           }
           break;
+        case 'CHECK_ROOM_REPLY':
+          bool isSuccess = reply['body']['message'] == 'success';
+          String roomNumber = reply['body']['room'];
+          String players = reply['body']['player'];
+          onCheckRoom(isSuccess, roomNumber, players);
+          break;
         case 'INDICATE_READY':
           var name = reply['body']['name'];
           onReceiveReady(name);
@@ -93,6 +100,20 @@ class NetworkController {
           print("INVALID COMMAND!");
       }
     });
+  }
+
+  void checkRoom(String roomNumber) {
+    var request = {
+      'type': 'CHECK_ROOM',
+      'body': {
+        'room': roomNumber
+      }
+    };
+    channel.sink.add(jsonEncode(request));
+  }
+
+  void attachCheckRoomListener(Function onCheckRoom) {
+    this.onCheckRoom = onCheckRoom;
   }
 
   void joinRoom(String roomNumber, String name, Colour colour, Function onJoin) {

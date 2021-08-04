@@ -48,6 +48,7 @@ function parseMessage(message, connection) {
   const object = JSON.parse(message);
   const type = object.type;
   const body = object.body;
+
   switch (type) {
     case "CREATE_ROOM":
       const newRoom = getNewRoom();
@@ -93,6 +94,26 @@ function parseMessage(message, connection) {
         // implement later
       }
       break;
+    case "CHECK_ROOM":
+       var roomNumber: body.room;
+       var reply = {
+         type: "CHECK_ROOM_REPLY",
+       }
+       if (rooms.has(roomNumber)) {
+         reply.body =  {
+            message: "success",
+            room: roomNumber,
+            player: mapping.get(roomNumber).players
+         }
+       } else {
+         reply.body =  {
+             message: "failed",
+             room: roomNumber,
+             player: null
+         }
+       }
+       connection.sendUTF(JSON.stringify(reply));
+       break;
     case "INDICATE_READY": // fall through
     case "START_GAME": // fall through
     case "START_ROUND": // fall through

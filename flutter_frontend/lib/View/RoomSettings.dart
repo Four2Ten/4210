@@ -104,7 +104,6 @@ class RoomSettingsState extends State<RoomSettings> with SingleTickerProviderSta
   }
 
   void handleButtonPress() {
-    print("here");
     gameController.setRoomSettings(_currentNumberOfQuestions.round(),
         _currentDurationValue.round());
 
