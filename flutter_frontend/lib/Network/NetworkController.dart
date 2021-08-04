@@ -65,7 +65,9 @@ class NetworkController {
           break;
         case 'CHECK_ROOM_REPLY':
           bool isSuccess = reply['body']['message'] == 'success';
-          onCheckRoom(isSuccess);
+          String roomNumber = reply['body']['room'];
+          String players = reply['body']['player'];
+          onCheckRoom(isSuccess, roomNumber, players);
           break;
         case 'INDICATE_READY':
           var name = reply['body']['name'];

@@ -47,7 +47,7 @@ function parseMessage(message, connection) {
   const object = JSON.parse(message);
   const type = object.type;
   const body = object.body;
-  print(object);
+
   switch (type) {
     case "CREATE_ROOM":
       const newRoom = getNewRoom();
@@ -101,11 +101,13 @@ function parseMessage(message, connection) {
        if (rooms.has(roomNumber)) {
          reply.body =  {
             message: "success",
+            room: roomNumber,
             player: mapping.get(roomNumber).players
          }
        } else {
          reply.body =  {
              message: "failed",
+             room: roomNumber,
              player: null
          }
        }
@@ -131,7 +133,6 @@ function parseMessage(message, connection) {
 }
 
 wsServer.on('request', function(request) {
-    console.log("here");
     if (!originIsAllowed(request.origin)) {
       // Make sure we only accept requests from an allowed origin
       request.reject();
