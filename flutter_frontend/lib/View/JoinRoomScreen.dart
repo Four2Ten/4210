@@ -28,7 +28,6 @@ class _JoinRoomScreenState extends State<JoinRoomScreen> {
   // Changes to the choose car screen if room exists
   // Else, shows error on UI
   void onCheckRoom(bool success, String roomNumber) {
-    print("here");
     if (success) {
       this.hasInvalidRoom = false;
       gameController.pin = roomNumber;

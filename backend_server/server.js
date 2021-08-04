@@ -49,7 +49,7 @@ function parseMessage(message, connection) {
   const body = object.body;
   print(object);
   switch (type) {
-    case 'CREATE_ROOM':
+    case "CREATE_ROOM":
       const newRoom = getNewRoom();
       var player = {
         name: body.name,
@@ -67,7 +67,7 @@ function parseMessage(message, connection) {
       });
       connection.sendUTF(JSON.stringify(reply));
       break;
-    case 'JOIN_ROOM':
+    case "JOIN_ROOM":
       var roomNumber = body.room;
       player = {
         name: body.name,
@@ -93,31 +93,31 @@ function parseMessage(message, connection) {
         // implement later
       }
       break;
-    case 'CHECK_ROOM':
+    case "CHECK_ROOM":
        var roomNumber: body.room;
        var reply = {
          type: "CHECK_ROOM_REPLY",
        }
        if (rooms.has(roomNumber)) {
          reply.body =  {
-            message: "Room exists",
+            message: "success",
             player: mapping.get(roomNumber).players
          }
        } else {
          reply.body =  {
-             message: "Room does not exist",
+             message: "failed",
              player: null
          }
        }
        connection.sendUTF(JSON.stringify(reply));
        break;
-    case 'INDICATE_READY': // fall through
-    case 'START_GAME': // fall through
-    case 'START_ROUND': // fall through
-    case 'GET_CORRECT': // fall through
-    case 'PASS': // fall through
-    case 'TIME_UP': // fall through
-    case 'END_GAME':
+    case "INDICATE_READY": // fall through
+    case "START_GAME": // fall through
+    case "START_ROUND": // fall through
+    case "GET_CORRECT": // fall through
+    case "PASS": // fall through
+    case "TIME_UP": // fall through
+    case "END_GAME":
       roomNumber = JSON.parse(message).body.room; // TODO: handle wrong room number
       clients = mapping.get(roomNumber).clients;
       // send every client

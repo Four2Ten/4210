@@ -107,7 +107,6 @@ class NetworkController {
         'room': roomNumber
       }
     };
-    print("HERE");
     channel.sink.add(jsonEncode(request));
   }
 
