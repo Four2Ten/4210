@@ -11,5 +11,8 @@
   "dependencies": {
     "http": "0.0.1-security",
     "websocket": "^1.0.34"
+  },
+  "devDependencies": {
+    "node-logger": "0.0.1"
   }
 }
