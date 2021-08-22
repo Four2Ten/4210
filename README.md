@@ -10,3 +10,10 @@ Most of the frontend Dart code can be found in the `flutter_frontend/lib` direct
 Most of the backend code can be found in the `backend_server` directory, inside `server.js` file.
 The backend server is hosted on Google App Engine. Click on the `backend_server` directory to read more
 about its specifications in its README. 
+
+# Current Progress
+Currently, an MVP version of the game has been completed. Basic functionalities of the app are fully working, including creating/joining a room, specifying game parameters, playing the game in both **multi-playeer** and **solo** mode, etc.
+
+## Create a Room
+
+
