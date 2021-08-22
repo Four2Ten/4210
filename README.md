@@ -15,5 +15,10 @@ about its specifications in its README.
 Currently, an MVP version of the game has been completed. Basic functionalities of the app are fully working, including creating/joining a room, specifying game parameters, playing the game in both **multi-playeer** and **solo** mode, etc.
 
 ## Create a Room
+![create a room](https://github.com/Four2Ten/4210/blob/main/readme_assets/create_room.gif)
 
+## Join a Room
+![join a room](https://github.com/Four2Ten/4210/blob/main/readme_assets/join_room.gif)
 
+## Play a game with two players
+![multi-player](https://github.com/Four2Ten/4210/blob/main/readme_assets/multiplayer.gif)
