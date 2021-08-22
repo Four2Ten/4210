@@ -12,7 +12,9 @@ The backend server is hosted on Google App Engine. Click on the `backend_server`
 about its specifications in its README. 
 
 # Current Progress
-Currently, an MVP version of the game has been completed. Basic functionalities of the app are fully working, including creating/joining a room, specifying game parameters, playing the game in both **multi-playeer** and **solo** mode, etc.
+Currently, an MVP version of the game has been completed. Basic functionalities of the app are fully working, including creating/joining a room, specifying game parameters, playing the game in both **multi-player** and **solo** mode, etc.
+
+Below are some demos using Android emulators. The emulators communicate and coordinate through the actual backend hosted on Google App Engine.
 
 ## Create a Room
 ![create a room](https://github.com/Four2Ten/4210/blob/main/readme_assets/create_room.gif)
@@ -22,3 +24,7 @@ Currently, an MVP version of the game has been completed. Basic functionalities 
 
 ## Play a game with two players
 ![multi-player](https://github.com/Four2Ten/4210/blob/main/readme_assets/multiplayer.gif)
+
+Eventually, our main game screen will look like the following mockups:
+![main screen 1](https://github.com/Four2Ten/4210/blob/main/readme_assets/main_game_screen_1.png)
+![main screen 2](https://github.com/Four2Ten/4210/blob/main/readme_assets/main_game_screen_2.png)
